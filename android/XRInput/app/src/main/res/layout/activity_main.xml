@@ -1,0 +1,214 @@
+<!--
+   Copyright 2024 Google LLC
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.google.xrinput.MainActivity">
+
+  <android.opengl.GLSurfaceView
+      android:id="@+id/surfaceview"
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent"
+      android:layout_gravity="top" />
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_marginTop="16dp"
+      android:layout_marginBottom="16dp"
+      android:layout_marginStart="16dp"
+      android:layout_marginEnd="16dp"
+      android:orientation="vertical">
+    <TextView
+        android:id="@+id/apptitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="XR Input"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+    <TextView
+        android:id="@+id/networkinfo_label"
+        android:textStyle="bold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="Network Info"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+    <LinearLayout
+        android:id="@+id/connection_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:orientation="horizontal">
+      <TextView
+          android:id="@+id/connection_label"
+          android:textStyle="bold"
+          android:layout_width="wrap_content"
+          android:layout_height="match_parent"
+          android:layout_weight="1"
+          android:layout_marginRight="8dp"
+          android:text="Status:" />
+      <TextView
+          android:id="@+id/status_text"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:layout_weight="1"
+          android:text="connected" />
+      <Space
+          android:layout_width="5dp"
+          android:layout_height="wrap_content"
+          android:layout_weight="1" />
+      <View
+          android:id="@+id/colorview"
+          android:layout_width="7dp"
+          android:layout_height="7dp"
+          android:layout_weight="1"
+          android:layout_marginTop="1dp"
+          android:layout_gravity="center" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/deviceip_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:orientation="horizontal">
+      <TextView
+          android:id="@+id/deviceip_label"
+          android:textStyle="bold"
+          android:layout_width="wrap_content"
+          android:layout_height="match_parent"
+          android:layout_weight="1"
+          android:layout_marginRight="8dp"
+          android:text="Device IP:" />
+      <TextView
+          android:id="@+id/deviceip_text"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:layout_weight="1"
+          android:text="192.168.0.2" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/hmdip_layout"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:orientation="horizontal">
+      <TextView
+          android:id="@+id/hmdip_label"
+          android:textStyle="bold"
+          android:layout_width="wrap_content"
+          android:layout_height="match_parent"
+          android:layout_weight="0"
+          android:layout_marginRight="8dp"
+          android:layout_gravity="top"
+          android:text="HMD IP:" />
+      <TextView
+          android:id="@+id/hmdip_text"
+          android:layout_width="wrap_content"
+          android:layout_height="match_parent"
+          android:layout_weight="0"
+          android:text="192.168.0.1" />
+      <Space
+          android:layout_width="12dp"
+          android:layout_height="wrap_content"
+          android:layout_weight="0" />
+      <Button
+          android:id="@+id/editHMDip_button"
+          android:layout_width="60dp"
+          android:layout_height="match_parent"
+          android:layout_weight="0"
+          android:layout_marginTop="-4dp"
+          android:layout_marginBottom="4dp"
+          android:text="@string/edit"
+          android:textSize="8sp"
+          tools:ignore="SmallSp" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:orientation="horizontal">
+      <TextView
+          android:id="@+id/poseinfo_label"
+          android:textStyle="bold"
+          android:layout_width="wrap_content"
+          android:layout_height="match_parent"
+          android:layout_marginTop="5dp"
+          android:text="ARCore"
+          android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+          tools:ignore="HardcodedText" />
+      <Switch
+          android:id="@+id/arcore_toggle"
+          android:layout_width="50dp"
+          android:layout_height="match_parent"
+          android:layout_weight="0"
+          android:layout_marginTop="4dp"
+          android:layout_marginBottom="0dp"
+          android:checked="true" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/position_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:orientation="horizontal">
+      <TextView
+          android:id="@+id/position_label"
+          android:textStyle="bold"
+          android:layout_width="wrap_content"
+          android:layout_height="match_parent"
+          android:layout_weight="1"
+          android:layout_marginEnd="10dp"
+          android:text="Position:"
+          tools:ignore="HardcodedText" />
+      <TextView
+          android:id="@+id/position_text"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:layout_weight="1"
+          android:text="(0.00, 0.00, 0.00)"
+          tools:ignore="HardcodedText" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/orientation_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:orientation="horizontal">
+      <TextView
+          android:id="@+id/orientation_label"
+          android:textStyle="bold"
+          android:layout_width="wrap_content"
+          android:layout_height="match_parent"
+          android:layout_weight="1"
+          android:layout_marginEnd="10dp"
+          android:text="Pitch, Yaw, Roll:"
+          tools:ignore="HardcodedText" />
+      <TextView
+          android:id="@+id/orientation_text"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:layout_weight="1"
+          android:text="(0.00, 0.00, 0.00)"
+          tools:ignore="HardcodedText" />
+    </LinearLayout>
+    <Button
+        android:id="@+id/connect_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="@string/connect_text" />
+  </LinearLayout>
+  <View
+      android:id="@+id/touchview"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content" />
+
+</RelativeLayout>

@@ -1,0 +1,66 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    compileSdk 30
+    buildToolsVersion "30.0.3"
+
+    defaultConfig {
+        applicationId "com.google.xrinputwearos"
+        minSdk 26
+        targetSdk 30
+        versionCode 1
+        versionName "1.0"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    buildFeatures {
+        viewBinding true
+    }
+}
+
+//dependencies {
+//
+////    implementation 'com.google.android.support:wearable:2.8.1'
+////    implementation 'com.google.android.gms:play-services-wearable:17.1.0'
+////    implementation 'androidx.percentlayout:percentlayout:1.0.0'
+////    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+////    implementation 'androidx.recyclerview:recyclerview:1.2.1'
+////    implementation 'androidx.wear:wear:1.1.0'
+//////    implementation 'androidx.appcompat:appcompat:1.3.0'
+////    implementation 'com.google.android.material:material:1.3.0'
+////    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+////    implementation 'androidx.appcompat:appcompat:1.3.0'
+////    implementation 'com.google.android.gms:play-services-location:18.0.0'
+//    compileOnly 'com.google.android.wearable:wearable:2.8.1'
+//    implementation 'com.google.android.gms:play-services-wearable:17.1.0'
+//    implementation 'androidx.percentlayout:percentlayout:1.0.0'
+//    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+//    implementation 'androidx.recyclerview:recyclerview:1.2.1'
+//    implementation 'androidx.wear:wear:1.1.0'
+////    compileOnly 'com.google.android.wearable:wearable:1.0+'
+//
+//}
+
+dependencies {
+
+    implementation 'com.google.android.support:wearable:2.8.1'
+    implementation 'com.google.android.gms:play-services-wearable:17.1.0'
+    implementation 'androidx.percentlayout:percentlayout:1.0.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
+    implementation 'androidx.wear:wear:1.1.0'
+//    implementation 'androidx.appcompat:appcompat:1.3.0'
+    implementation 'com.google.android.material:material:1.3.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'androidx.appcompat:appcompat:1.3.0'
+    implementation 'com.google.android.gms:play-services-location:18.0.0'
+    compileOnly 'com.google.android.wearable:wearable:2.8.1'
+}
