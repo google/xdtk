@@ -62,11 +62,30 @@ Connect all devices to the same **IPv4 wireless network** (e.g., a mobile hotspo
 ### 5. Test connection
 From the XDTK package directory in Unity, open the **XDTK-Sample** scene, located in `Runtime/Scenes`. **Run this scene** using the Play button, or build and run it on your device.
 
-On your Android device(s), open the **XR Input** app and enter the IPv4 address of the device running Unity. (Here is how to locate this on [Windows](https://support.microsoft.com/en-us/windows/find-your-ip-address-in-windows-f21a9bbc-c582-55cd-35e0-73431160a1b9), [Mac](https://www.security.org/vpn/find-mac-ip-address/), and [Meta Quest](https://multitechverse.com/how-to-check-oculus-quest-2-ip-address/).)
+On your Android device(s), open the **XR Input** app and press **Edit** to enter the IPv4 address of the device running Unity. (Here is how to locate this on [Windows](https://support.microsoft.com/en-us/windows/find-your-ip-address-in-windows-f21a9bbc-c582-55cd-35e0-73431160a1b9), [Mac](https://www.security.org/vpn/find-mac-ip-address/), and [Meta Quest](https://multitechverse.com/how-to-check-oculus-quest-2-ip-address/)). *Note: this value is stored between app sessions.*
 
+Tap **Start Connection** to begin sending data to Unity. If the connection is successful, the status indicator in the Android app will be green. In Unity, a **Device** GameObject will appear and should rotate as you rotate your Android device. As you connect more devices they should also appear here. 
 
+[Rotating gif]
 
+If the connection is unsuccessful (or if the Unity side is not running), the Android status indicator will be orange and read *"Sending..."*.
 
+### Troubleshooting
+If both the Android and Unity platforms are connected to the same IPv4 network, the IP address of the Unity platform is entered correctly, and both the Unity and Android applications are running, and the device is *still* not connecting, your firewall may blocking Unity from establishing a connection. Check your [firewall settings](https://ozekisms.com/p_2615-how-to-allow-incoming-connections-in-windows-firewall.html) and make sure inbound and outbound communication is allowed for Unity.]
+
+## System Architecture
+
+[Architecture]
 
 ## Using XDTK
+* For details on creating XDTK-based Unity applications, see [here]().
+* For details on the Android application and communication protocol, see [here]().
+
+## Contributers
+
+ - **Eric J. Gonzalez**, Google AR
+ - **Khushman Patel**, Google AR
+ - **Karan Ahuja**, Northwestern University & Google AR
+ - **Mar Gonzalez-Franco**, Google AR
+
 
