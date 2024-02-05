@@ -1,0 +1,24 @@
+{
+  "name": "com.google.xdtk",
+  "version": "1.0.0",
+  "displayName": "XDTK",
+  "description": "XDTK enables multiple Android devices on the same local network to easily act as input/output devices (e.g., controllers) for a Unity application.\nIn addition to this package, the Android devices must have the XDTK app installed: https://github.com/google/xdtk",
+  "unity": "2022.3",
+  "license": "Apache-2.0",
+  "documentationUrl": "https://github.com/google/xdtk",
+  "licensesUrl": "https://www.apache.org/licenses/LICENSE-2.0",
+  "keywords": [
+    "android",
+    "vr",
+    "xr",
+    "input",
+    "multi-device",
+    "cross-device"
+  ],
+  "author": {
+    "name": "Google LLC"
+  },
+  "dependencies": {
+    "com.unity.textmeshpro": "3.0.6"
+  }
+}
