@@ -1,53 +1,72 @@
-# New Project Template
+# XDTK: Cross-device Toolkit for Android & Unity
 
-This repository contains a template that can be used to seed a repository for a
-new Google open source project.
+The Cross-device Toolkit (XDTK) is an open-source toolkit developed to enable simple, straight-forward communication between Android devices and the Unity game engine. The toolkit is comprised of a native Android application (one for Phone/Tablet devices, and one for WearOS devices) and a Unity package. XDTK handles device discovery and communication over WiFi, with Android devices providing a steady stream of sensor data, input events, and (if applicable) ARCore pose information by default.
 
-See [go/releasing](http://go/releasing) (available externally at
-https://opensource.google/documentation/reference/releasing) for more information about
-releasing a new Google open source project.
+[TEASER GIF(S)]
 
-This template uses the Apache license, as is Google's default.  See the
-documentation for instructions on using alternate license.
+## Reference
 
-## How to use this template
+This toolkit was published at the 3rd Annual [Workshop on Open Access Tools and Libraries for Virtual Reality](https://openvrlab.github.io/) at IEEE VR 2024.
 
-1. Clone it from GitHub.
-    * There is no reason to fork it.
-1. Create a new local repository and copy the files from this repo into it.
-1. Modify README.md and docs/contributing.md to represent your project, not the
-   template project.
-1. Develop your new project!
-
-``` shell
-git clone https://github.com/google/new-project
-mkdir my-new-thing
-cd my-new-thing
-git init
-cp -r ../new-project/* ../new-project/.github .
-git add *
-git commit -a -m 'Boilerplate for new Google open source project'
+```bibtex
+@inproceedings{Bovo2024,
+    author    = {Eric J. Gonzalez, Khushman Patel, Karan Ahuja, and Mar Gonzalez-Franco},
+    title     = {XDTK: A Cross-Device Toolkit for Input & Interaction in XR},
+    booktitle = {Proceedings of the IEEE VR Conference 2024},
+    year      = {2024},
+    address   = {Orlando, Florida},
+    url       = {https://github.com/google/xdtk}
+}
 ```
 
-## Source Code Headers
+## Installation
 
-Every file containing source code must include copyright and license
-information. This includes any JS/CSS files that you might be serving out to
-browsers. (This is to help well-intentioned people avoid accidental copying that
-doesn't comply with the license.)
+### 1. Clone or download this repository
 
-Apache header:
+``` shell
+git clone https://github.com/google/xdtk
+```
 
-    Copyright 2022 Google LLC
+### 2. Compile Android application to your device(s)
+Use [AndroidStudio](https://developer.android.com/studio) to open and build the XR Input app to your device. 
 
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
+For Phone and Tablet devices, use:
+``` 
+xdtk/android/XRInput
+```
 
-        https://www.apache.org/licenses/LICENSE-2.0
+For WearOS devices (e.g., smartwatch), use:
+``` 
+xdtk/android/XRInputWearOS
+```
 
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
+Alternatively, you can directly install the appropriate APK from [here]().
+
+[Screenshots of Phone & Watch Apps]
+
+### 3. Install XDTK Unity package
+
+In your Unity project:
+
+* Go to **Window** → **Package Manager**
+
+* Click the **[+]** button in the status bar and select **Add package from disk**
+
+* Navigate to the XDTK directory and select the **package.json** file at `xdtk/unity-package/package.json `
+
+Alternatively, you can [install directly from git](https://docs.unity3d.com/Manual/upm-ui-giturl.html) by selecting **Add package from git URL** and using following link: `https://github.com/google/xdtk.git?path=unity-package`
+
+### 4. Network setup
+Connect all devices to the same **IPv4 wireless network** (e.g., a mobile hotspot). This includes all Android devices and the device running your Unity application (e.g., your laptop, desktop, or XR headset).
+
+### 5. Test connection
+From the XDTK package directory in Unity, open the **XDTK-Sample** scene, located in `Runtime/Scenes`. **Run this scene** using the Play button, or build and run it on your device.
+
+On your Android device(s), open the **XR Input** app and enter the IPv4 address of the device running Unity. (Here is how to locate this on [Windows](https://support.microsoft.com/en-us/windows/find-your-ip-address-in-windows-f21a9bbc-c582-55cd-35e0-73431160a1b9), [Mac](https://www.security.org/vpn/find-mac-ip-address/), and [Meta Quest](https://multitechverse.com/how-to-check-oculus-quest-2-ip-address/).)
+
+
+
+
+
+## Using XDTK
+
