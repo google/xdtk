@@ -2,7 +2,7 @@
 
 The Cross-device Toolkit (XDTK) is an open-source toolkit developed to enable simple, straight-forward communication between Android devices and the Unity game engine. The toolkit is comprised of a native Android application (one for Phone/Tablet devices, and one for WearOS devices) and a Unity package. XDTK handles device discovery and communication over WiFi, with Android devices providing a steady stream of sensor data, input events, and (if applicable) ARCore pose information by default.
 
-[TEASER GIF(S)]
+![Teaser](media/multidevice.gif)
 
 ## Reference
 
@@ -66,16 +66,17 @@ On your Android device(s), open the **XR Input** app and press **Edit** to enter
 
 Tap **Start Connection** to begin sending data to Unity. If the connection is successful, the status indicator in the Android app will be green. In Unity, a **Device** GameObject will appear and should rotate as you rotate your Android device. As you connect more devices they should also appear here. 
 
-[Rotating gif]
-
 If the connection is unsuccessful (or if the Unity side is not running), the Android status indicator will be orange and read *"Sending..."*.
+
+
+![Visual](media/device-visual.gif)
 
 ### Troubleshooting
 If both the Android and Unity platforms are connected to the same IPv4 network, the IP address of the Unity platform is entered correctly, and both the Unity and Android applications are running, and the device is *still* not connecting, your firewall may blocking Unity from establishing a connection. Check your [firewall settings](https://ozekisms.com/p_2615-how-to-allow-incoming-connections-in-windows-firewall.html) and make sure inbound and outbound communication is allowed for Unity.]
 
 ## System Architecture
 
-[Architecture]
+![System](media/system.png)
 
 ## Using XDTK
 * For details on creating XDTK-based Unity applications, see [here]().
