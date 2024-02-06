@@ -1,6 +1,6 @@
 # XDTK: Unity Package
 
-![System](media/system.png)
+![System](../media/system.png)
 
 ## What's Included?
 The Unity package includes two prefabs that enable the XDTK framework:
@@ -23,6 +23,8 @@ To aid in debugging, we also provide a **DeviceVisual** prefab, which creates a 
 * follows the connected device's orientation (via gyroscope)
 * displays multi-touch points and touch gesture events (tap, double tap, fling, pinch)
 * displays a virtual stylus when a pen is used on the device (when applicable)
+
+![DeviceVisual Prefab](../media/device-visuals.png)
 
 ## Creating Behaviors
 The only thing a behavior script needs to specify is the ID number of the device it wants to "listen" to. 
@@ -119,5 +121,6 @@ public class ScaleOnPinch : MonoBehaviour
 In some cases, you may not want Unity to auto-assign the ID of a device based on connection order. For example, you may want a particular Android device to always have the same ID. You can specify this by directly including a **Device** Prefab in your scene, and specifying its ID and/or IP address.
 * When receiving a message from a new Android device (i.e., from an unseen IP address), *UDPTransceiver* will first check if any unassigned **Device** GameObjects have this IP specified. If so, messages received from that IP are routed to that **Device**.
 
-[Screenshot of Device Prefab]
+![Device Prefab](../media/device-prefab.png)
+![Device Prefab Inspector](../media/device-prefab-inspector.png)
 
