@@ -60,15 +60,15 @@ Alternatively, you can [install directly from git](https://docs.unity3d.com/Manu
 Connect all devices to the same **IPv4 wireless network** (e.g., a mobile hotspot). This includes all Android devices and the device running your Unity application (e.g., your laptop, desktop, or XR headset).
 
 ### 5. Test connection
-From the XDTK package directory in Unity, open the **XDTK-Sample** scene, located in `Runtime/Scenes`. **Run this scene** using the Play button, or build and run it on your device.
+* From the XDTK package directory in Unity, open the **XDTK-Sample** scene, located in `Runtime/Scenes`. **Run this scene** using the Play button, or build and run it on your device.
 
-On your Android device(s), open the **XR Input** app and press **Edit** to enter the IPv4 address of the device running Unity. (Here is how to locate this on [Windows](https://support.microsoft.com/en-us/windows/find-your-ip-address-in-windows-f21a9bbc-c582-55cd-35e0-73431160a1b9), [Mac](https://www.security.org/vpn/find-mac-ip-address/), and [Meta Quest](https://multitechverse.com/how-to-check-oculus-quest-2-ip-address/)). *Note: this value is stored between app sessions.*
+* On your Android device(s), open the **XR Input** app and press **Edit** to enter the IPv4 address of the device running Unity. (Here is how to locate this on [Windows](https://support.microsoft.com/en-us/windows/find-your-ip-address-in-windows-f21a9bbc-c582-55cd-35e0-73431160a1b9), [Mac](https://www.security.org/vpn/find-mac-ip-address/), and [Meta Quest](https://multitechverse.com/how-to-check-oculus-quest-2-ip-address/)). *Note: this value is stored between app sessions.*
 
-Tap **Start Connection** to begin sending data to Unity. If the connection is successful, the status indicator in the Android app will be green. In Unity, a **Device** GameObject will appear and should rotate as you rotate your Android device. As you connect more devices they should also appear here. 
+* Tap **Start Connection** to begin sending data to Unity. If the connection is successful, the status indicator in the Android app will be green. In Unity, a **Device** GameObject will appear and should rotate as you rotate your Android device. As you connect more devices they should also appear here. 
 
-If the connection is unsuccessful (or if the Unity side is not running), the Android status indicator will be orange and read *"Sending..."*.
+* If the connection is unsuccessful (or if the Unity side is not running), the Android status indicator will be orange and read *"Sending..."*.
 
-To disconnect, quickly tap anywhere on the screen 8 times.
+* To disconnect, quickly tap anywhere on the screen 8 times.
 
 
 ![Visual](media/device-visual.gif)
