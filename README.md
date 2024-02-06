@@ -9,7 +9,7 @@ The Cross-device Toolkit (XDTK) is an open-source toolkit developed to enable si
 This toolkit was published at the 3rd Annual [Workshop on Open Access Tools and Libraries for Virtual Reality](https://openvrlab.github.io/) at IEEE VR 2024.
 
 ```bibtex
-@inproceedings{Bovo2024,
+@inproceedings{GonzalezXDTK2024,
     author    = {Eric J. Gonzalez, Khushman Patel, Karan Ahuja, and Mar Gonzalez-Franco},
     title     = {XDTK: A Cross-Device Toolkit for Input & Interaction in XR},
     booktitle = {Proceedings of the IEEE VR Conference 2024},
@@ -40,7 +40,7 @@ For WearOS devices (e.g., smartwatch), use:
 xdtk/android/XRInputWearOS
 ```
 
-Alternatively, you can directly install the appropriate APK from [here]().
+Alternatively, you can directly install the appropriate APK from [here](android/apks).
 
 [Screenshots of Phone & Watch Apps]
 
@@ -68,11 +68,13 @@ Tap **Start Connection** to begin sending data to Unity. If the connection is su
 
 If the connection is unsuccessful (or if the Unity side is not running), the Android status indicator will be orange and read *"Sending..."*.
 
+To disconnect, quickly tap anywhere on the screen 8 times.
+
 
 ![Visual](media/device-visual.gif)
 
 ### Troubleshooting
-If both the Android and Unity platforms are connected to the same IPv4 network, the IP address of the Unity platform is entered correctly, and both the Unity and Android applications are running, and the device is *still* not connecting, your firewall may blocking Unity from establishing a connection. Check your [firewall settings](https://ozekisms.com/p_2615-how-to-allow-incoming-connections-in-windows-firewall.html) and make sure inbound and outbound communication is allowed for Unity.]
+If both the Android and Unity platforms are connected to the same IPv4 network, the IP address of the Unity platform is entered correctly, and both the Unity and Android applications are running, and the device is *still* not connecting, your firewall may blocking Unity from establishing a connection. Check your [firewall settings](https://ozekisms.com/p_2615-how-to-allow-incoming-connections-in-windows-firewall.html) and make sure inbound and outbound communication is allowed for Unity.
 
 ## System Architecture
 
