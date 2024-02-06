@@ -1,5 +1,7 @@
 # XDTK: Unity Package
 
+![System](media/system.png)
+
 ## What's Included?
 The Unity package includes two prefabs that enable the XDTK framework:
 
@@ -114,6 +116,8 @@ public class ScaleOnPinch : MonoBehaviour
 ```
 
 ## Connecting Devices
-In some cases, you may not want Unity to auto-assign the ID of a device based on connection order. For example, you may want a particular Android device to always have the same ID. You can specify this by directly including a **Device** GameObject in your scene, and specifying its ID and/or IP address.
-* When receiving a message from a new Android device (i.e., from an unseen IP address), *UDPTransceiver* will first check if any unassigned **Device** GameObjects have this IP specified. If so, messages are routed to that **Device**.
+In some cases, you may not want Unity to auto-assign the ID of a device based on connection order. For example, you may want a particular Android device to always have the same ID. You can specify this by directly including a **Device** Prefab in your scene, and specifying its ID and/or IP address.
+* When receiving a message from a new Android device (i.e., from an unseen IP address), *UDPTransceiver* will first check if any unassigned **Device** GameObjects have this IP specified. If so, messages received from that IP are routed to that **Device**.
+
+[Screenshot of Device Prefab]
 

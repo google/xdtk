@@ -81,7 +81,7 @@ If both the Android and Unity platforms are connected to the same IPv4 network, 
 ![System](media/system.png)
 
 ## Using XDTK
-* For details on creating XDTK-based Unity applications, see [here]().
+* For details on creating XDTK-based Unity applications, see [here](unity-package/README.md).
 * For details on the Android application and communication protocol, see [here]().
 
 ## Contributers
