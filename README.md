@@ -74,7 +74,9 @@ Connect all devices to the same **IPv4 wireless network** (e.g., a mobile hotspo
 ![Visual](media/device-visual.gif)
 
 ### Troubleshooting
-If both the Android and Unity platforms are connected to the same IPv4 network, the IP address of the Unity platform is entered correctly, and both the Unity and Android applications are running, and the device is *still* not connecting, your firewall may blocking Unity from establishing a connection. Check your [firewall settings](https://ozekisms.com/p_2615-how-to-allow-incoming-connections-in-windows-firewall.html) and make sure inbound and outbound communication is allowed for Unity.
+Make sure the Android and Unity platforms are connected to the same IPv4 network, the IP address of the Unity platform is entered correctly, and both the Unity and Android applications are running. 
+
+If the device is *still* not connecting, your firewall may blocking Unity from establishing a connection. Check your [firewall settings](https://ozekisms.com/p_2615-how-to-allow-incoming-connections-in-windows-firewall.html) and make sure inbound and outbound communication is allowed for Unity.
 
 ## System Architecture
 
@@ -82,7 +84,7 @@ If both the Android and Unity platforms are connected to the same IPv4 network, 
 
 ## Using XDTK
 * For details on creating XDTK-based Unity applications, see [here](unity-package/README.md).
-* For details on the Android application and communication protocol, see [here]().
+* For details on the Android application and communication protocol, see [here](android/README.md).
 
 ## Contributers
 
