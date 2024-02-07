@@ -20,5 +20,12 @@
   },
   "dependencies": {
     "com.unity.textmeshpro": "3.0.6"
-  }
+  },
+  "samples": [
+    {
+        "displayName": "XDTK Samples",
+        "description": "Contains samples for using XDTK",
+        "path": "Samples~/SamplesXDTK"
+    }
+  ]
 }

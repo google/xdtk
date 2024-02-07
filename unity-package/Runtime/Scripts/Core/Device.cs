@@ -338,13 +338,14 @@ public class Device : MonoBehaviour
                 PositionAR = new Vector3(float.Parse(data[1]), 
                                     float.Parse(data[2]), 
                                     float.Parse(data[3]));
+                PositionAR = convertAndroidToUnityVector3(PositionAR);
 
                 // save orientation
                 RotationAR = new Quaternion(float.Parse(data[4]), 
                                           float.Parse(data[5]), 
                                           float.Parse(data[6]),
                                           float.Parse(data[7]));
-                convertAndroidToUnityQuaternion(RotationAR, header);
+                RotationAR = convertAndroidToUnityQuaternion(RotationAR, header);
                 break;
 
             case "ACCELEROMETER":
@@ -497,12 +498,20 @@ public class Device : MonoBehaviour
                                    -1f * androidQuat.z, 
                                    androidQuat.w);
 
-
         // to align android sensor (not ARcore) coordinates with ARcore (y-up), need additional -90 deg rotation about x
         if (sensor == "GAME_ROTATION_VECTOR") unityQuat = Quaternion.AngleAxis(-90f,Vector3.right) * unityQuat;
         if (sensor == "ROTATION_VECTOR") unityQuat = Quaternion.AngleAxis(-90f,Vector3.right) * unityQuat;
 
         return unityQuat;
+    }
+
+    private Vector3 convertAndroidToUnityVector3(Vector3 androidVec) {
+        // remapping to left handed coordinate system
+        // (x right, y up, z towards user) ---> (x right, y up, z away from user)
+        Vector3 unityVec = new Vector3(androidVec.x, 
+                                       androidVec.y, 
+                                       -1f * androidVec.z);
+        return unityVec;
     }
 
 }

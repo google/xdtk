@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3e46957b4f9b36488b3a402a95d819a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ID: -1
+  ID: 0
   Address: 
   DeviceName: 
   Size_px: {x: 0, y: 0}
