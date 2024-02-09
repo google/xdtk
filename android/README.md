@@ -79,4 +79,14 @@ The Android device provides its name and screen size whenever it receives a `WHO
 ### Messages from Unity
 Unity responds with a `HEARTBEAT` message everytime it reveives a message from an Android device. The Android device must receive a `HEARTBEAT` within 1 second of sending its message in order to maintain a `Connected` status in the app (i.e., green indicator).
 
+#### Haptic Feedback
+Primitive haptic feedback can be played on the device, based on the Android's built-in [Vibration Effects](https://developer.android.com/reference/android/os/VibrationEffect). The following Unity messages trigger these effects:
+|                          |               |                   |
+|:------------------------:|:-------------:|:-----------------:|
+|     **HAPTICS_CLICK**    |               |                   |
+| **HAPTICS_DOUBLE_CLICK** |               |                   |
+|  **HAPTICS_HEAVY_CLICK** |               |                   |
+|     **HAPTICS_TICK**     |               |                   |
+|    **HAPTICS_ONESHOT**   | duration (ms) | amplitude (0-255) |
+
 
