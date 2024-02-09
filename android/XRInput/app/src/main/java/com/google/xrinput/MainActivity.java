@@ -20,9 +20,11 @@ import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.drawable.GradientDrawable;
 import android.hardware.Sensor;
 import android.opengl.GLSurfaceView;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -64,7 +66,9 @@ import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 
 /**
  * This application streams sensor and ARCore data over a specified wireless network. ARCore
@@ -110,6 +114,7 @@ public class MainActivity extends AppCompatActivity implements SampleRender.Rend
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     ARCoreOnCreate();
+    disableSystemGestures();
 
     // Initialize TextViews
     connectionStatusText = findViewById((R.id.status_text));
@@ -234,6 +239,27 @@ public class MainActivity extends AppCompatActivity implements SampleRender.Rend
     // this makes sure that this view lies behind everything and doesn't consume
     // touch events for buttons etc.
     rootView.setTranslationZ(-100f);
+  }
+
+  private void disableSystemGestures() {
+    // Disable system gestures on left and right edge to prevent accidental app closing
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+      final View rootView = findViewById(android.R.id.content);
+      rootView.post(() -> {
+        int screenWidth = rootView.getWidth();
+        int screenHeight = rootView.getHeight();
+
+        // Define exclusion rects (e.g., 200 pixels from left and right edges)
+        Rect leftEdge = new Rect(0, 0, 200, screenHeight);
+        Rect rightEdge = new Rect(screenWidth - 200, 0, screenWidth, screenHeight);
+
+        List<Rect> exclusionRects = new ArrayList<>();
+        exclusionRects.add(leftEdge);
+        exclusionRects.add(rightEdge);
+
+        rootView.setSystemGestureExclusionRects(exclusionRects);
+      });
+    }
   }
 
   private void initUI() {

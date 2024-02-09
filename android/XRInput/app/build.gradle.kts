@@ -22,7 +22,7 @@ android {
 
   defaultConfig {
     applicationId = "com.google.xrinput"
-    minSdk = 25
+    minSdk = 29
     targetSdk = 34
     versionCode = 1
     versionName = "1.0"
