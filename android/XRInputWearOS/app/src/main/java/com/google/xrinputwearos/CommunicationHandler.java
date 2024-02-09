@@ -20,6 +20,8 @@ import android.app.Activity;
 import android.graphics.Point;
 import android.hardware.Sensor;
 import android.os.Build;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.util.DisplayMetrics;
 import android.view.ScaleGestureDetector;
 // import com.google.ar.core.Pose;
@@ -33,6 +35,7 @@ public class CommunicationHandler {
   private final int receivePort = 5556;
   private Boolean isConnected = false;
   private Activity mainApp;
+  private Vibrator vibrator;
 
   // timer
   private Timer resetHeartbeatTimer;
@@ -48,6 +51,7 @@ public class CommunicationHandler {
     mainApp = activity;
     resetHeartbeatTimer = new Timer();
     initResetHeartbeatTask();
+    vibrator = activity.getSystemService(Vibrator.class);
   }
 
   public void openConnection(String ipAddress) {
@@ -402,6 +406,31 @@ public class CommunicationHandler {
 
         case "WHOAREYOU":
           sendDeviceInfo();
+          break;
+
+
+        case "HAPTICS_CLICK":
+          vibrator.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_CLICK));
+          break;
+
+        case "HAPTICS_DOUBLE_CLICK":
+          vibrator.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_DOUBLE_CLICK));
+          break;
+
+        case "HAPTICS_HEAVY_CLICK":
+          vibrator.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_HEAVY_CLICK));
+          break;
+
+        case "HAPTICS_TICK":
+          vibrator.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_TICK));
+          break;
+
+        case "HAPTICS_ONESHOT":
+          long millis = Long.parseLong(messageParts[1]);
+          int amplitude = Integer.parseInt(messageParts[2]);
+          if (millis <= 0) break;
+          if (amplitude < 0 || amplitude > 255) break;
+          vibrator.vibrate(VibrationEffect.createOneShot(millis,amplitude));
           break;
       }
     }

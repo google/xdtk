@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements SampleRender.Rend
   // Handlers
   private SensorHandler sensorHandler;
   private TouchHandler touchHandler;
-  private CommunicationHandler communicationHandler = new CommunicationHandler(MainActivity.this);
+  private CommunicationHandler communicationHandler;
   private boolean sendingDataFlag = false;
   private int tapsToStopConnection = 8;
   private int tapsRemainingToStopConnection = tapsToStopConnection;
@@ -127,6 +127,7 @@ public class MainActivity extends AppCompatActivity implements SampleRender.Rend
     initUI();
 
     // Initialize handlers
+    initCommunicationHandler();
     initSensorHandler();
     initTouchHandler();
 
@@ -239,6 +240,10 @@ public class MainActivity extends AppCompatActivity implements SampleRender.Rend
     // this makes sure that this view lies behind everything and doesn't consume
     // touch events for buttons etc.
     rootView.setTranslationZ(-100f);
+  }
+
+  private void initCommunicationHandler() {
+    communicationHandler =  new CommunicationHandler(MainActivity.this);
   }
 
   private void disableSystemGestures() {
