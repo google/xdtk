@@ -86,7 +86,7 @@ If the device is *still* not connecting, your firewall may blocking Unity from e
 * For details on creating XDTK-based Unity applications, see [here](unity-package/README.md).
 * For details on the Android application and communication protocol, see [here](android/README.md).
 
-## Contributers
+## Contributors
 
  - **Eric J. Gonzalez**, Google AR
  - **Khushman Patel**, Google AR
