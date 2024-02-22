@@ -42,8 +42,6 @@ xdtk/android/XRInputWearOS
 
 Alternatively, you can directly install the appropriate APK from [here](android/apks).
 
-[Screenshots of Phone & Watch Apps]
-
 ### 3. Install XDTK Unity package
 
 In your Unity project:
