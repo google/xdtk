@@ -10,9 +10,9 @@ This toolkit was published at the 3rd Annual [Workshop on Open Access Tools and 
 
 ```bibtex
 @inproceedings{GonzalezXDTK2024,
-    author    = {Eric J. Gonzalez, Khushman Patel, Karan Ahuja, and Mar Gonzalez-Franco},
+    author    = {Gonzalez, Eric J. and Patel, Khushman and Ahuja, Karan and Gonzalez-Franco, Mar},
     title     = {XDTK: A Cross-Device Toolkit for Input & Interaction in XR},
-    booktitle = {Proceedings of the IEEE VR Conference 2024},
+    booktitle = {2024 IEEE Conference on Virtual Reality and 3D User Interfaces Abstracts and Workshops (VRW)},
     year      = {2024},
     address   = {Orlando, Florida},
     url       = {https://github.com/google/xdtk}
