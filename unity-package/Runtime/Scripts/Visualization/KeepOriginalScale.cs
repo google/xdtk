@@ -14,24 +14,26 @@
 
 using UnityEngine;
 
-public class KeepOriginalScale : MonoBehaviour
-{
-    Vector3 originalScale;
-    Vector3 originalParentScale;
-
-    // Start is called before the first frame update
-    void Start()
+namespace Google.XR.XDTK {
+    public class KeepOriginalScale : MonoBehaviour
     {
-        originalScale = transform.localScale;
-        originalParentScale = transform.parent.localScale;
-    }
+        Vector3 originalScale;
+        Vector3 originalParentScale;
 
-    // Update is called once per frame
-    void Update()
-    {
-        var x = transform.parent.localScale.x / originalParentScale.x;
-        var y = transform.parent.localScale.y / originalParentScale.y;
-        var z = transform.parent.localScale.z / originalParentScale.z;
-        transform.localScale = new Vector3 (originalScale.x/x,originalScale.y/y, originalScale.z/z);
+        // Start is called before the first frame update
+        void Start()
+        {
+            originalScale = transform.localScale;
+            originalParentScale = transform.parent.localScale;
+        }
+
+        // Update is called once per frame
+        void Update()
+        {
+            var x = transform.parent.localScale.x / originalParentScale.x;
+            var y = transform.parent.localScale.y / originalParentScale.y;
+            var z = transform.parent.localScale.z / originalParentScale.z;
+            transform.localScale = new Vector3 (originalScale.x/x,originalScale.y/y, originalScale.z/z);
+        }
     }
 }

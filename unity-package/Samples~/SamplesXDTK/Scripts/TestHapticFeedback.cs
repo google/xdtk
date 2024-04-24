@@ -15,6 +15,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Google.XR.XDTK;
 
 public class TestHapticFeedback : MonoBehaviour
 {

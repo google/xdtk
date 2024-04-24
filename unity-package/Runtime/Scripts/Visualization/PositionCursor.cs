@@ -14,99 +14,101 @@
 
 using UnityEngine;
 
-public class PositionCursor : MonoBehaviour
-{
-    public int deviceToListenTo = 0;
-    public bool inheritDeviceFromParent = true;
-    public int touchID;
-    public GameObject screen;
-    public GameObject pen;
-    Device device;
-    MultiDeviceEventManager eventManager;
-    MeshRenderer meshRenderer;
-
-    private void OnEnable() {
-        eventManager.OnTouchDown.AddListener(OnTouchDown);
-        eventManager.OnTouchUp.AddListener(OnTouchUp);
-        eventManager.OnTouchMove.AddListener(OnTouchMove);
-    }
-
-    private void OnDisable() {
-        eventManager.OnTouchDown.RemoveListener(OnTouchDown);
-        eventManager.OnTouchUp.RemoveListener(OnTouchUp);
-        eventManager.OnTouchMove.RemoveListener(OnTouchMove);
-    }
-
-    void Awake() {
-        // initialize event manager
-        eventManager = FindObjectOfType<MultiDeviceEventManager>();
-    }
-
-    // Start is called before the first frame update
-    void Start()
+namespace Google.XR.XDTK {
+    public class PositionCursor : MonoBehaviour
     {
-        meshRenderer = GetComponent<MeshRenderer>();
-        meshRenderer.enabled = false;
+        public int deviceToListenTo = 0;
+        public bool inheritDeviceFromParent = true;
+        public int touchID;
+        public GameObject screen;
+        public GameObject pen;
+        Device device;
+        MultiDeviceEventManager eventManager;
+        MeshRenderer meshRenderer;
 
-        if (pen != null) pen.GetComponent<MeshRenderer>().enabled = false;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        UpdateTargetDevice();
-    }
-
-    private void UpdateTargetDevice() {
-        // get target device ID, if inheriting from parent
-        if (inheritDeviceFromParent) {
-            Device d = GetComponentInParent<Device>();
-            if (d != null) deviceToListenTo = d.ID;
+        private void OnEnable() {
+            eventManager.OnTouchDown.AddListener(OnTouchDown);
+            eventManager.OnTouchUp.AddListener(OnTouchUp);
+            eventManager.OnTouchMove.AddListener(OnTouchMove);
         }
 
-        // find target device
-        foreach (Device d in FindObjectsOfType<Device>()) {
-            if (d.ID == deviceToListenTo) {
-                device = d;
-                break;
-            }
+        private void OnDisable() {
+            eventManager.OnTouchDown.RemoveListener(OnTouchDown);
+            eventManager.OnTouchUp.RemoveListener(OnTouchUp);
+            eventManager.OnTouchMove.RemoveListener(OnTouchMove);
         }
-    }
 
-    private void OnTouchDown(int ID, int _touchID, Vector2 touchPos) {
-        if (deviceToListenTo == ID && touchID == _touchID) {
-            UpdateCurosorPosition();
-
-            if (device.ToolType == Device.Tool.Pen && pen != null) {
-                pen.GetComponent<MeshRenderer>().enabled = true;
-            }
-            meshRenderer.enabled = true;
+        void Awake() {
+            // initialize event manager
+            eventManager = FindObjectOfType<MultiDeviceEventManager>();
         }
-    } 
 
-    private void OnTouchUp(int ID, int _touchID, Vector2 touchPos) {
-        if (deviceToListenTo == ID && touchID == _touchID) {
-            UpdateCurosorPosition();
-
-            if (device.ToolType == Device.Tool.Pen && pen != null) {
-                pen.GetComponent<MeshRenderer>().enabled = false;
-            }
+        // Start is called before the first frame update
+        void Start()
+        {
+            meshRenderer = GetComponent<MeshRenderer>();
             meshRenderer.enabled = false;
+
+            if (pen != null) pen.GetComponent<MeshRenderer>().enabled = false;
         }
-    } 
 
-    private void OnTouchMove(int ID, int _touchID, Vector2 delta) {
-        if (deviceToListenTo == ID && touchID == _touchID) {
-            UpdateCurosorPosition();
+        // Update is called once per frame
+        void Update()
+        {
+            UpdateTargetDevice();
         }
-    } 
 
-    private void UpdateCurosorPosition() {
-        var xProp = device.TouchPos[touchID].x / device.Size_px.x;
-        var yProp = device.TouchPos[touchID].y / device.Size_px.y;
+        private void UpdateTargetDevice() {
+            // get target device ID, if inheriting from parent
+            if (inheritDeviceFromParent) {
+                Device d = GetComponentInParent<Device>();
+                if (d != null) deviceToListenTo = d.ID;
+            }
 
-        transform.localPosition = new Vector3(-1f * xProp * screen.transform.localScale.x + screen.transform.localScale.x/2f,
-                                              -1f * yProp * screen.transform.localScale.y + screen.transform.localScale.y/2f,
-                                              1f * screen.transform.localScale.z/2f);
+            // find target device
+            foreach (Device d in FindObjectsOfType<Device>()) {
+                if (d.ID == deviceToListenTo) {
+                    device = d;
+                    break;
+                }
+            }
+        }
+
+        private void OnTouchDown(int ID, int _touchID, Vector2 touchPos) {
+            if (deviceToListenTo == ID && touchID == _touchID) {
+                UpdateCurosorPosition();
+
+                if (device.ToolType == Device.Tool.Pen && pen != null) {
+                    pen.GetComponent<MeshRenderer>().enabled = true;
+                }
+                meshRenderer.enabled = true;
+            }
+        } 
+
+        private void OnTouchUp(int ID, int _touchID, Vector2 touchPos) {
+            if (deviceToListenTo == ID && touchID == _touchID) {
+                UpdateCurosorPosition();
+
+                if (device.ToolType == Device.Tool.Pen && pen != null) {
+                    pen.GetComponent<MeshRenderer>().enabled = false;
+                }
+                meshRenderer.enabled = false;
+            }
+        } 
+
+        private void OnTouchMove(int ID, int _touchID, Vector2 delta) {
+            if (deviceToListenTo == ID && touchID == _touchID) {
+                UpdateCurosorPosition();
+            }
+        } 
+
+        private void UpdateCurosorPosition() {
+            var xProp = device.TouchPos[touchID].x / device.Size_px.x;
+            var yProp = device.TouchPos[touchID].y / device.Size_px.y;
+
+            transform.localPosition = new Vector3(-1f * xProp * screen.transform.localScale.x + screen.transform.localScale.x/2f,
+                                                -1f * yProp * screen.transform.localScale.y + screen.transform.localScale.y/2f,
+                                                1f * screen.transform.localScale.z/2f);
+        }
     }
 }

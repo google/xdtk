@@ -16,65 +16,67 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class Transceiver : MonoBehaviour
-{
-    protected Dictionary<string, Device> devicesByAddress;
-    protected Dictionary<int, Device> devicesByID;
-    protected List<Device> devices;
-    protected List<string> registeredAddresses;
-
-    // Set up the transceiver
-    // > Call this within the Start function of any Transceiver subclasses
-    public void Initialize()
+namespace Google.XR.XDTK {
+    public class Transceiver : MonoBehaviour
     {
-        // Make sure no other Transceivers are in the scene
-        var transceivers = FindObjectsOfType<Transceiver>();
-        if (transceivers.Length > 1) {
-            Debug.LogError("Cannot have more than one Transceiver (or subclass) in scene.");
+        protected Dictionary<string, Device> devicesByAddress;
+        protected Dictionary<int, Device> devicesByID;
+        protected List<Device> devices;
+        protected List<string> registeredAddresses;
+
+        // Set up the transceiver
+        // > Call this within the Start function of any Transceiver subclasses
+        public void Initialize()
+        {
+            // Make sure no other Transceivers are in the scene
+            var transceivers = FindObjectsOfType<Transceiver>();
+            if (transceivers.Length > 1) {
+                Debug.LogError("Cannot have more than one Transceiver (or subclass) in scene.");
+            }
+
+            // Create database of connected devices and their addresses & IDs 
+            // (to be filled during device discovery)
+            devices = new List<Device>();
+            devicesByAddress = new Dictionary<string, Device>();
+            devicesByID = new Dictionary<int, Device>();
+            registeredAddresses = new List<string>();
         }
 
-        // Create database of connected devices and their addresses & IDs 
-        // (to be filled during device discovery)
-        devices = new List<Device>();
-        devicesByAddress = new Dictionary<string, Device>();
-        devicesByID = new Dictionary<int, Device>();
-        registeredAddresses = new List<string>();
-    }
-
-    // [Important] Call this from any Transceiver subclasses (e.g. UDPTransceiver)
-    public void RouteMessageToDevice(string message, string address) {
-        // make sure address is in dictionary
-        if (!registeredAddresses.Contains(address)) return;
+        // [Important] Call this from any Transceiver subclasses (e.g. UDPTransceiver)
+        public void RouteMessageToDevice(string message, string address) {
+            // make sure address is in dictionary
+            if (!registeredAddresses.Contains(address)) return;
+            
+            var device = devicesByAddress[address];
+            device.ParseData(message);
+        }
         
-        var device = devicesByAddress[address];
-        device.ParseData(message);
-    }
-    
-    // Start is called before the first frame update
-    public virtual void Start()
-    {
-        Initialize();
-    }
+        // Start is called before the first frame update
+        public virtual void Start()
+        {
+            Initialize();
+        }
 
-    // Update is called once per frame
-    public virtual void Update()
-    {
-        
-    }
+        // Update is called once per frame
+        public virtual void Update()
+        {
+            
+        }
 
-    public List<Device> GetDevices() {
-        return devices;
-    }
+        public List<Device> GetDevices() {
+            return devices;
+        }
 
-    public List<int> GetIDs() {
-        return devicesByID.Keys.ToArray().ToList();
-    }
+        public List<int> GetIDs() {
+            return devicesByID.Keys.ToArray().ToList();
+        }
 
-    public Dictionary<int, Device> GetDevicesByID() {
-        return devicesByID;
-    }
+        public Dictionary<int, Device> GetDevicesByID() {
+            return devicesByID;
+        }
 
-    public Dictionary<string, Device> GetDevicesByAddress() {
-        return devicesByAddress;
+        public Dictionary<string, Device> GetDevicesByAddress() {
+            return devicesByAddress;
+        }
     }
 }

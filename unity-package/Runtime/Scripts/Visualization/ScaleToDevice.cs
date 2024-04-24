@@ -14,41 +14,43 @@
 
 using UnityEngine;
 
-public class ScaleToDevice : MonoBehaviour
-{
-    public int deviceToListenTo = 0;
-    public float scaleFactor = 1;
-    public bool inheritDeviceFromParent = true;
-    Device device;
-
-    // Start is called before the first frame update
-    void Start()
+namespace Google.XR.XDTK {
+    public class ScaleToDevice : MonoBehaviour
     {
-        
-    }
+        public int deviceToListenTo = 0;
+        public float scaleFactor = 1;
+        public bool inheritDeviceFromParent = true;
+        Device device;
 
-    // Update is called once per frame
-    void Update()
-    {
-        UpdateTargetDevice();
-        
-        if (device.receivedDeviceInfo) {
-            gameObject.transform.localScale = new Vector3 (scaleFactor * device.Size_m.x, scaleFactor * device.Size_m.y, transform.localScale.z);
-        }
-    }
-
-    private void UpdateTargetDevice() {
-        // get target device ID, if inheriting from parent
-        if (inheritDeviceFromParent) {
-            Device d = GetComponentInParent<Device>();
-            if (d != null) deviceToListenTo = d.ID;
+        // Start is called before the first frame update
+        void Start()
+        {
+            
         }
 
-        // find target device
-        foreach (Device d in FindObjectsOfType<Device>()) {
-            if (d.ID == deviceToListenTo) {
-                device = d;
-                break;
+        // Update is called once per frame
+        void Update()
+        {
+            UpdateTargetDevice();
+            
+            if (device.receivedDeviceInfo) {
+                gameObject.transform.localScale = new Vector3 (scaleFactor * device.Size_m.x, scaleFactor * device.Size_m.y, transform.localScale.z);
+            }
+        }
+
+        private void UpdateTargetDevice() {
+            // get target device ID, if inheriting from parent
+            if (inheritDeviceFromParent) {
+                Device d = GetComponentInParent<Device>();
+                if (d != null) deviceToListenTo = d.ID;
+            }
+
+            // find target device
+            foreach (Device d in FindObjectsOfType<Device>()) {
+                if (d.ID == deviceToListenTo) {
+                    device = d;
+                    break;
+                }
             }
         }
     }

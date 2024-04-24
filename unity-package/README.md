@@ -44,7 +44,7 @@ This example script changes the scale of the GameObject it is attached to based 
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Google.XR.XDTK;
 
 public class ScaleOnPinch : MonoBehaviour
 {

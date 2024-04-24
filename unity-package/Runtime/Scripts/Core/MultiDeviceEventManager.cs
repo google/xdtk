@@ -15,71 +15,72 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-
-public class MultiDeviceEventManager : MonoBehaviour
-{
-    #region RAWTOUCH
-    public UnityEvent<int, int, Vector2> OnTouchDown;
-    public void TouchDown(int deviceID, int touchID, Vector2 touchPos)
+namespace Google.XR.XDTK {
+    public class MultiDeviceEventManager : MonoBehaviour
     {
-        OnTouchDown.Invoke(deviceID, touchID, touchPos);
-    }
-    public UnityEvent<int, int, Vector2> OnTouchUp;
-    public void TouchUp(int deviceID, int touchID, Vector2 touchPos)
-    {
-        OnTouchUp.Invoke(deviceID, touchID, touchPos);
-    }
-    public UnityEvent<int, int, Vector2> OnTouchMove;
-    public void TouchMove(int deviceID, int touchID, Vector2 delta)
-    {
-        OnTouchMove.Invoke(deviceID, touchID, delta);
-    }
-    #endregion
+        #region RAWTOUCH
+        public UnityEvent<int, int, Vector2> OnTouchDown;
+        public void TouchDown(int deviceID, int touchID, Vector2 touchPos)
+        {
+            OnTouchDown.Invoke(deviceID, touchID, touchPos);
+        }
+        public UnityEvent<int, int, Vector2> OnTouchUp;
+        public void TouchUp(int deviceID, int touchID, Vector2 touchPos)
+        {
+            OnTouchUp.Invoke(deviceID, touchID, touchPos);
+        }
+        public UnityEvent<int, int, Vector2> OnTouchMove;
+        public void TouchMove(int deviceID, int touchID, Vector2 delta)
+        {
+            OnTouchMove.Invoke(deviceID, touchID, delta);
+        }
+        #endregion
 
-    #region TOUCHGESTURES
-    public UnityEvent<int, int, Vector2, int> OnTap;
-    public void Tap(int deviceID, int touchID, Vector2 tapPos, int tapCount)
-    {
-        OnTap.Invoke(deviceID, touchID, tapPos, tapCount);
-    }
+        #region TOUCHGESTURES
+        public UnityEvent<int, int, Vector2, int> OnTap;
+        public void Tap(int deviceID, int touchID, Vector2 tapPos, int tapCount)
+        {
+            OnTap.Invoke(deviceID, touchID, tapPos, tapCount);
+        }
 
-    public UnityEvent<int, int, Vector2> OnTapConfirmed;
-    public void TapConfirmed(int deviceID, int touchID, Vector2 tapPos)
-    {
-        OnTapConfirmed.Invoke(deviceID, touchID, tapPos);
-    }
+        public UnityEvent<int, int, Vector2> OnTapConfirmed;
+        public void TapConfirmed(int deviceID, int touchID, Vector2 tapPos)
+        {
+            OnTapConfirmed.Invoke(deviceID, touchID, tapPos);
+        }
 
-    public UnityEvent<int, int, Vector2, int> OnDoubleTap;
-    public void DoubleTap(int deviceID, int touchID, Vector2 tapPos, int tapCount)
-    {
-        OnDoubleTap.Invoke(deviceID, touchID, tapPos, tapCount);
-    }
+        public UnityEvent<int, int, Vector2, int> OnDoubleTap;
+        public void DoubleTap(int deviceID, int touchID, Vector2 tapPos, int tapCount)
+        {
+            OnDoubleTap.Invoke(deviceID, touchID, tapPos, tapCount);
+        }
 
-    public UnityEvent<int, int, Vector2> OnLongPress;
-    public void LongPress(int deviceID, int touchID, Vector2 tapPos)
-    {
-        OnLongPress.Invoke(deviceID, touchID, tapPos);
-    }
+        public UnityEvent<int, int, Vector2> OnLongPress;
+        public void LongPress(int deviceID, int touchID, Vector2 tapPos)
+        {
+            OnLongPress.Invoke(deviceID, touchID, tapPos);
+        }
 
-    public UnityEvent<int, float> OnPinchStart;
-       public void PinchStart(int deviceID, float span) {
-        OnPinchStart.Invoke(deviceID, span);
-    }
+        public UnityEvent<int, float> OnPinchStart;
+        public void PinchStart(int deviceID, float span) {
+            OnPinchStart.Invoke(deviceID, span);
+        }
 
-    public UnityEvent<int, float> OnPinchEnd;
-    public void PinchEnd(int deviceID, float span) {
-        OnPinchEnd.Invoke(deviceID, span);
-    }
+        public UnityEvent<int, float> OnPinchEnd;
+        public void PinchEnd(int deviceID, float span) {
+            OnPinchEnd.Invoke(deviceID, span);
+        }
 
-    public UnityEvent<int, float> OnPinchMove;
-    public void PinchMove(int deviceID, float span) {
-        OnPinchMove.Invoke(deviceID, span);
-    }
+        public UnityEvent<int, float> OnPinchMove;
+        public void PinchMove(int deviceID, float span) {
+            OnPinchMove.Invoke(deviceID, span);
+        }
 
-    public UnityEvent<int, Vector2> OnFling;
-    public void Fling(int deviceID, Vector2 direction) {
-        OnFling.Invoke(deviceID, direction);
-    }
+        public UnityEvent<int, Vector2> OnFling;
+        public void Fling(int deviceID, Vector2 direction) {
+            OnFling.Invoke(deviceID, direction);
+        }
 
-    #endregion
+        #endregion
+    }
 }

@@ -15,12 +15,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Google.XR.XDTK;
 
 public class RotateAboutYOnDrag : MonoBehaviour
 {
     public int deviceToListenTo = 0;
     public float speed = 10f;
-    int touchID = 0;
     Device device;
     MultiDeviceEventManager eventManager;
     public bool pinching = false;
