@@ -22,6 +22,24 @@
   <uses-permission android:name="android.permission.INTERNET" />
   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
   <uses-permission android:name="android.permission.VIBRATE"/>
+
+  <!-- For Bluetooth -->
+  <!-- Request legacy Bluetooth permissions on older devices. -->
+  <uses-permission android:name="android.permission.BLUETOOTH"
+      android:maxSdkVersion="30" />
+  <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"
+      android:maxSdkVersion="30" />
+  <!-- Needed to look for Bluetooth devices.-->
+  <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+  <!-- Needed to be discoverable on Bluetooth devices.-->
+  <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
+  <!-- Needed to communicate with other Bluetooth devices.-->
+  <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+  <!-- Needed to look derive physical location using Bluetooth. It doesn't appear that we need this for now.
+  <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+  -->
+
   <!-- Limits app visibility in the Google Play Store to ARCore supported devices
        (https://developers.google.com/ar/devices). -->
   <uses-feature android:name="android.hardware.camera.ar" android:required="true"/>
