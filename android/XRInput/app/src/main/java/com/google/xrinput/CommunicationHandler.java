@@ -30,7 +30,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class CommunicationHandler {
-  private Transceiver transceiver;
+  private BTTranceiver bttransceiver;
   private final int sendPort = 5555;
   private final int receivePort = 5556;
   private Boolean isConnected = false;
@@ -55,7 +55,7 @@ public class CommunicationHandler {
   }
 
   public void openConnection(String ipAddress) {
-    transceiver = new Transceiver(ipAddress, sendPort, receivePort, this);
+    bttransceiver = new BTTranceiver(mainApp.getApplicationContext(), mainApp);
   }
 
   public void closeConnection() {
