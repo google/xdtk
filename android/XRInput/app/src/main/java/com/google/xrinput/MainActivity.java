@@ -16,9 +16,18 @@
 
 package com.google.xrinput;
 
+import static android.Manifest.permission.BLUETOOTH_SCAN;
+
 import android.annotation.SuppressLint;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.GradientDrawable;
@@ -35,8 +44,14 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import com.google.ar.core.ArCoreApk;
 import com.google.ar.core.Camera;
 import com.google.ar.core.Config;
@@ -61,6 +76,9 @@ import com.google.ar.core.exceptions.UnavailableArcoreNotInstalledException;
 import com.google.ar.core.exceptions.UnavailableDeviceNotCompatibleException;
 import com.google.ar.core.exceptions.UnavailableSdkTooOldException;
 import com.google.ar.core.exceptions.UnavailableUserDeclinedInstallationException;
+
+import com.google.android.play.core.install.model.ActivityResult;
+
 import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.InetAddress;
@@ -109,6 +127,14 @@ public class MainActivity extends AppCompatActivity implements SampleRender.Rend
   private int tapsToStopConnection = 8;
   private int tapsRemainingToStopConnection = tapsToStopConnection;
 
+  // Bluetooth
+  private int REQUEST_CONNECT_DEVICE = 1;
+  private int REQUEST_ENABLE_BT = 2;
+  private Button blueToothScan;
+  private BluetoothManager blueToothManager = Context.getSystemService(Context.BLUETOOTH_SERVICE);
+  private BroadcastReceiver receiver;
+  private ActivityResultLauncher<Intent> bluetoothResultLauncher;
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -122,6 +148,25 @@ public class MainActivity extends AppCompatActivity implements SampleRender.Rend
     hmdIPText = findViewById((R.id.hmdip_text));
     positionText = findViewById((R.id.position_text));
     orientationText = findViewById((R.id.orientation_text));
+
+    // Initialize Bluetooth
+
+    // Create a BroadcastReceiver for ACTION_FOUND.
+    receiver = new BroadcastReceiver() {
+      public void onReceive(Context context, Intent intent) {
+        String action = intent.getAction();
+        if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+          // Discovery has found a device. Get the BluetoothDevice
+          // object and its info from the Intent.
+          BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+          if (ContextCompat.checkSelfPermission(context, BLUETOOTH_SCAN) == PackageManager.PERMISSION_DENIED){
+            
+          }
+          String deviceName = device.getName();
+          String deviceHardwareAddress = device.getAddress(); // MAC address
+        }
+      }
+    };
 
     // Initialize UI
     initUI();
