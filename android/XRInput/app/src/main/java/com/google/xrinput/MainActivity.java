@@ -160,7 +160,7 @@ public class MainActivity extends AppCompatActivity implements SampleRender.Rend
           // object and its info from the Intent.
           BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
           if (ContextCompat.checkSelfPermission(context, BLUETOOTH_SCAN) == PackageManager.PERMISSION_DENIED){
-            
+
           }
           String deviceName = device.getName();
           String deviceHardwareAddress = device.getAddress(); // MAC address
