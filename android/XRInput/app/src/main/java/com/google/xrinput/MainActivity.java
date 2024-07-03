@@ -61,6 +61,7 @@ import com.google.ar.core.Pose;
 import com.google.ar.core.Session;
 import com.google.ar.core.TrackingFailureReason;
 import com.google.ar.core.TrackingState;
+import com.google.ar.core.examples.java.common.helpers.BTPermissionHelper;
 import com.google.ar.core.examples.java.common.helpers.CameraPermissionHelper;
 import com.google.ar.core.examples.java.common.helpers.DisplayRotationHelper;
 import com.google.ar.core.examples.java.common.helpers.FullScreenHelper;
@@ -111,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements SampleRender.Rend
   private TextView orientationText;
   private Button connectButton;
   private Button editHMDaddressButton;
-  private Switch toggleARCoreSwitch;
+  private Switch toggleARCoreSwitch;;
   private String hmdIPstring = "192.168.0.1";
   private GradientDrawable connectionIndicator;
 
@@ -126,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements SampleRender.Rend
   private boolean sendingDataFlag = false;
   private int tapsToStopConnection = 8;
   private int tapsRemainingToStopConnection = tapsToStopConnection;
-
+  
   // Bluetooth
   private int REQUEST_CONNECT_DEVICE = 1;
   private int REQUEST_ENABLE_BT = 2;
@@ -178,54 +179,54 @@ public class MainActivity extends AppCompatActivity implements SampleRender.Rend
 
     // Define the code block to be executed
     runnableCode =
-        new Runnable() {
-          @Override
-          public void run() {
-            updateDisplayInfo();
+            new Runnable() {
+              @Override
+              public void run() {
+                updateDisplayInfo();
 
-            // Polling-based Communication
-            if (communicationHandler.isRunning()) {
+                // Polling-based Communication
+                if (communicationHandler.isRunning()) {
 
-              // ARCore
-              if (USE_AR_CORE) {
-                if (frame != null
-                    && frame.getCamera().getTrackingState() == TrackingState.TRACKING) {
-                  communicationHandler.sendPose(pose);
+                  // ARCore
+                  if (USE_AR_CORE) {
+                    if (frame != null
+                            && frame.getCamera().getTrackingState() == TrackingState.TRACKING) {
+                      communicationHandler.sendPose(pose);
+                    }
+                  }
+
+                  // Sensors
+                  communicationHandler.sendAccelerometer(sensorHandler);
+                  communicationHandler.sendGravity(sensorHandler);
+                  communicationHandler.sendGyroscope(sensorHandler);
+                  communicationHandler.sendLinearAcceleration(sensorHandler);
+                  communicationHandler.sendRotationVector(sensorHandler);
+                  communicationHandler.sendGameRotationVector(sensorHandler);
+                  communicationHandler.sendMagneticField(sensorHandler);
+                  communicationHandler.sendProximity(sensorHandler);
+                  communicationHandler.sendAmbientTemperature(sensorHandler);
+                  communicationHandler.sendLight(sensorHandler);
+                  communicationHandler.sendDeviceOrientation(sensorHandler);
+
+                  // Check if we should stop communication
+                  if (tapsRemainingToStopConnection == 0) {
+                    sendingDataFlag = false;
+                    communicationHandler.closeConnection();
+
+                    connectButton.setText(R.string.connect_text);
+                    connectButton.setClickable(true);
+                    connectButton.setEnabled(true);
+                    editHMDaddressButton.setClickable(true);
+                    editHMDaddressButton.setEnabled(true);
+                    toggleARCoreSwitch.setClickable(true);
+                    toggleARCoreSwitch.setEnabled(true);
+                  }
                 }
+
+                // Repeat this runnable code block again every 10 ms
+                handler.postDelayed(runnableCode, 10);
               }
-
-              // Sensors
-              communicationHandler.sendAccelerometer(sensorHandler);
-              communicationHandler.sendGravity(sensorHandler);
-              communicationHandler.sendGyroscope(sensorHandler);
-              communicationHandler.sendLinearAcceleration(sensorHandler);
-              communicationHandler.sendRotationVector(sensorHandler);
-              communicationHandler.sendGameRotationVector(sensorHandler);
-              communicationHandler.sendMagneticField(sensorHandler);
-              communicationHandler.sendProximity(sensorHandler);
-              communicationHandler.sendAmbientTemperature(sensorHandler);
-              communicationHandler.sendLight(sensorHandler);
-              communicationHandler.sendDeviceOrientation(sensorHandler);
-
-              // Check if we should stop communication
-              if (tapsRemainingToStopConnection == 0) {
-                sendingDataFlag = false;
-                communicationHandler.closeConnection();
-
-                connectButton.setText(R.string.connect_text);
-                connectButton.setClickable(true);
-                connectButton.setEnabled(true);
-                editHMDaddressButton.setClickable(true);
-                editHMDaddressButton.setEnabled(true);
-                toggleARCoreSwitch.setClickable(true);
-                toggleARCoreSwitch.setEnabled(true);
-              }
-            }
-
-            // Repeat this runnable code block again every 10 ms
-            handler.postDelayed(runnableCode, 10);
-          }
-        };
+            };
 
     // Start the initial runnable task by posting through the handler
     handler.post(runnableCode);
@@ -317,90 +318,98 @@ public class MainActivity extends AppCompatActivity implements SampleRender.Rend
     SharedPreferences sharedPref = getSharedPreferences("DeviceInputXRPreferences", MODE_PRIVATE);
     hmdIPstring = sharedPref.getString("hmdIPstring", hmdIPstring);
 
+    // Bluetooth LE requires specific permissions to operate. If we did not yet obtain runtime
+    // permission, now is a good time to ask the user for it.
+    if (!BTPermissionHelper.hasBTPermission(this)) {
+      BTPermissionHelper.requestPermissions(this);
+      return;
+    }
+
     // Initialize buttons
     connectButton = findViewById(R.id.connect_button);
     connectButton.setOnClickListener(
-        new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            // This code will be executed when the button is pressed
-            if (!sendingDataFlag) {
-              sendingDataFlag = true;
-              communicationHandler.openConnection(hmdIPstring);
-              Log.d(TAG, "Started sending data");
+            new View.OnClickListener() {
+              @Override
+              public void onClick(View v) {
+                // This code will be executed when the button is pressed
+                if (!sendingDataFlag) {
+                  sendingDataFlag = true;
+                  //communicationHandler.openConnection(hmdIPstring);
+                  communicationHandler.bluetoothBecomeDiscoverable();
+                  Log.d(TAG, "Started sending data");
 
-              // disable button
-              connectButton.setClickable(false);
-              connectButton.setEnabled(false);
-              editHMDaddressButton.setClickable(false);
-              editHMDaddressButton.setEnabled(false);
-              toggleARCoreSwitch.setClickable(false);
-              toggleARCoreSwitch.setEnabled(false);
-            }
-          }
-        });
+                  // disable button
+                  connectButton.setClickable(false);
+                  connectButton.setEnabled(false);
+                  editHMDaddressButton.setClickable(false);
+                  editHMDaddressButton.setEnabled(false);
+                  toggleARCoreSwitch.setClickable(false);
+                  toggleARCoreSwitch.setEnabled(false);
+                }
+              }
+            });
 
     toggleARCoreSwitch = findViewById(R.id.arcore_toggle);
     toggleARCoreSwitch.setOnCheckedChangeListener(
-        new CompoundButton.OnCheckedChangeListener() {
-          @Override
-          public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            if (isChecked) {
-              // Resume ARCore
-              if (USE_AR_CORE) ARCoreOnResume();
-            } else {
-              // Pause ARCore
-              if (USE_AR_CORE) ARCoreOnPause();
-              pose = null;
-              messageSnackbarHelper.hide(MainActivity.this);
-            }
-          }
-        });
+            new CompoundButton.OnCheckedChangeListener() {
+              @Override
+              public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                  // Resume ARCore
+                  if (USE_AR_CORE) ARCoreOnResume();
+                } else {
+                  // Pause ARCore
+                  if (USE_AR_CORE) ARCoreOnPause();
+                  pose = null;
+                  messageSnackbarHelper.hide(MainActivity.this);
+                }
+              }
+            });
 
     editHMDaddressButton = findViewById(R.id.editHMDip_button);
     editHMDaddressButton.setOnClickListener(
-        new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
+            new View.OnClickListener() {
+              @Override
+              public void onClick(View v) {
 
-            // Create an EditText
-            final EditText input = new EditText(MainActivity.this);
+                // Create an EditText
+                final EditText input = new EditText(MainActivity.this);
 
-            // Set up the AlertDialog
-            new AlertDialog.Builder(MainActivity.this)
-                // .setTitle("Edit IP Address of HMD to connect with")
-                .setMessage("Enter the IP address of your HMD:")
-                .setView(input)
-                .setPositiveButton(
-                    "OK",
-                    new DialogInterface.OnClickListener() {
-                      @Override
-                      public void onClick(DialogInterface dialog, int whichButton) {
-                        // When the "OK" button is clicked, get the text from the EditText and
-                        // assign it to your String variable
+                // Set up the AlertDialog
+                new AlertDialog.Builder(MainActivity.this)
+                        // .setTitle("Edit IP Address of HMD to connect with")
+                        .setMessage("Enter the IP address of your HMD:")
+                        .setView(input)
+                        .setPositiveButton(
+                                "OK",
+                                new DialogInterface.OnClickListener() {
+                                  @Override
+                                  public void onClick(DialogInterface dialog, int whichButton) {
+                                    // When the "OK" button is clicked, get the text from the EditText and
+                                    // assign it to your String variable
 
-                        // only allow '0-9' and '.'
-                        hmdIPstring = input.getText().toString().trim().replaceAll("[^0-9.]", "");
+                                    // only allow '0-9' and '.'
+                                    hmdIPstring = input.getText().toString().trim().replaceAll("[^0-9.]", "");
 
-                        // save string to memory
-                        SharedPreferences sharedPref =
-                            getSharedPreferences("DeviceInputXRPreferences", MODE_PRIVATE);
-                        SharedPreferences.Editor editor = sharedPref.edit();
-                        editor.putString("hmdIPstring", hmdIPstring);
-                        editor.apply();
-                      }
-                    })
-                .setNegativeButton(
-                    "Cancel",
-                    new DialogInterface.OnClickListener() {
-                      @Override
-                      public void onClick(DialogInterface dialog, int whichButton) {
-                        // When the "Cancel" button is clicked, do nothing
-                      }
-                    })
-                .show();
-          }
-        });
+                                    // save string to memory
+                                    SharedPreferences sharedPref =
+                                            getSharedPreferences("DeviceInputXRPreferences", MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = sharedPref.edit();
+                                    editor.putString("hmdIPstring", hmdIPstring);
+                                    editor.apply();
+                                  }
+                                })
+                        .setNegativeButton(
+                                "Cancel",
+                                new DialogInterface.OnClickListener() {
+                                  @Override
+                                  public void onClick(DialogInterface dialog, int whichButton) {
+                                    // When the "Cancel" button is clicked, do nothing
+                                  }
+                                })
+                        .show();
+              }
+            });
 
     // Initialize connection status indicator
     // > create an instance of GradientDrawable and set its shape to be an oval
@@ -440,7 +449,7 @@ public class MainActivity extends AppCompatActivity implements SampleRender.Rend
     if (sendingDataFlag) {
       tapsRemainingToStopConnection = tapsToStopConnection - touchHandler.getCurrentTapCount();
       connectButton.setText(
-          "Tap anywhere " + tapsRemainingToStopConnection + " more times to disconnect");
+              "Tap anywhere " + tapsRemainingToStopConnection + " more times to disconnect");
     }
 
     // ------ ARCORE --------
@@ -450,23 +459,23 @@ public class MainActivity extends AppCompatActivity implements SampleRender.Rend
       float[] eulerAngles = quaternionToEulerAngles(rotation);
 
       String msg =
-          "("
-              + String.format("%.2f", position[0])
-              + ", "
-              + String.format("%.2f", position[1])
-              + ", "
-              + String.format("%.2f", position[2])
-              + ")";
+              "("
+                      + String.format("%.2f", position[0])
+                      + ", "
+                      + String.format("%.2f", position[1])
+                      + ", "
+                      + String.format("%.2f", position[2])
+                      + ")";
       positionText.setText(msg);
 
       msg =
-          "("
-              + String.format("%.2f", 180f * (1 / Math.PI) * eulerAngles[0])
-              + ", "
-              + String.format("%.2f", 180f * (1 / Math.PI) * eulerAngles[1])
-              + ", "
-              + String.format("%.2f", 180f * (1 / Math.PI) * eulerAngles[2])
-              + ")";
+              "("
+                      + String.format("%.2f", 180f * (1 / Math.PI) * eulerAngles[0])
+                      + ", "
+                      + String.format("%.2f", 180f * (1 / Math.PI) * eulerAngles[1])
+                      + ", "
+                      + String.format("%.2f", 180f * (1 / Math.PI) * eulerAngles[2])
+                      + ")";
       orientationText.setText(msg);
     } else {
       String msg = "(0.00, 0.00, 0.00)";
@@ -506,10 +515,10 @@ public class MainActivity extends AppCompatActivity implements SampleRender.Rend
   public String getLocalIpAddress() {
     try {
       for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces();
-          en.hasMoreElements(); ) {
+           en.hasMoreElements(); ) {
         NetworkInterface intf = en.nextElement();
         for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses();
-            enumIpAddr.hasMoreElements(); ) {
+             enumIpAddr.hasMoreElements(); ) {
           InetAddress inetAddress = enumIpAddr.nextElement();
           if (!inetAddress.isLoopbackAddress() && inetAddress instanceof Inet4Address) {
             return inetAddress.getHostAddress();
@@ -589,7 +598,7 @@ public class MainActivity extends AppCompatActivity implements SampleRender.Rend
         // Create the session.
         session = new Session(/* context= */ this);
       } catch (UnavailableArcoreNotInstalledException
-          | UnavailableUserDeclinedInstallationException e) {
+               | UnavailableUserDeclinedInstallationException e) {
         message = "Please install ARCore";
         exception = e;
       } catch (UnavailableApkTooOldException e) {
@@ -649,14 +658,36 @@ public class MainActivity extends AppCompatActivity implements SampleRender.Rend
   @Override
   public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] results) {
     super.onRequestPermissionsResult(requestCode, permissions, results);
+
+    // Indicates if we need to finish the application
+    boolean needsToFinish = false;
+
     if (!CameraPermissionHelper.hasCameraPermission(this)) {
       // Use toast instead of snackbar here since the activity will exit.
       Toast.makeText(this, "Camera permission is needed to run this application", Toast.LENGTH_LONG)
-          .show();
+              .show();
       if (!CameraPermissionHelper.shouldShowRequestPermissionRationale(this)) {
         // Permission denied with checking "Do not ask again".
         CameraPermissionHelper.launchPermissionSettings(this);
       }
+      // Mark that we needs to run the finish
+      needsToFinish = true;
+    }
+
+    // Same as above, except for Bluetooth this time
+    if (!BTPermissionHelper.hasBTPermission(this)) {
+      // Use toast instead of snackbar here since the activity will exit.
+      Toast.makeText(this, "Bluetooth permissions are needed to run this application", Toast.LENGTH_LONG)
+              .show();
+      if (!BTPermissionHelper.shouldShowRequestPermissionRationale(this)) {
+        // Permission denied with checking "Do not ask again".
+        BTPermissionHelper.launchPermissionSettings(this);
+      }
+      // Mark that we needs to run the finish
+      needsToFinish = true;
+    }
+
+    if (needsToFinish){
       finish();
     }
   }
@@ -676,7 +707,7 @@ public class MainActivity extends AppCompatActivity implements SampleRender.Rend
       backgroundRenderer = new BackgroundRenderer(render);
       /* width= */
       /* height= */ Framebuffer virtualSceneFramebuffer =
-          new Framebuffer(render, /* width= */ 1, /* height= */ 1);
+              new Framebuffer(render, /* width= */ 1, /* height= */ 1);
     } catch (IOException e) {
       Log.e(TAG, "Failed to read a required asset file", e);
       messageSnackbarHelper.showError(this, "Failed to read a required asset file: " + e);
@@ -699,7 +730,7 @@ public class MainActivity extends AppCompatActivity implements SampleRender.Rend
     // initialized during the execution of onSurfaceCreated.
     if (!hasSetTextureNames) {
       session.setCameraTextureNames(
-          new int[] {backgroundRenderer.getCameraColorTexture().getTextureId()});
+              new int[] {backgroundRenderer.getCameraColorTexture().getTextureId()});
       hasSetTextureNames = true;
     }
 

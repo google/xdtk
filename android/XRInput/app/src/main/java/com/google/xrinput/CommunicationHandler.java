@@ -31,6 +31,7 @@ import java.util.TimerTask;
 
 public class CommunicationHandler {
   private Transceiver transceiver;
+  private BTTransceiver btTransceiver;
   private final int sendPort = 5555;
   private final int receivePort = 5556;
   private Boolean isConnected = false;
@@ -56,6 +57,10 @@ public class CommunicationHandler {
 
   public void openConnection(String ipAddress) {
     transceiver = new Transceiver(ipAddress, sendPort, receivePort, this);
+  }
+
+  public void bluetoothBecomeDiscoverable (){
+    btTransceiver = new BTTransceiver();
   }
 
   public void closeConnection() {
