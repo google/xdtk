@@ -125,14 +125,6 @@ public class MainActivity extends AppCompatActivity implements SampleRender.Rend
   private boolean sendingDataFlag = false;
   private int tapsToStopConnection = 8;
   private int tapsRemainingToStopConnection = tapsToStopConnection;
-  
-  // Bluetooth
-  private int REQUEST_CONNECT_DEVICE = 1;
-  private int REQUEST_ENABLE_BT = 2;
-  private Button blueToothScan;
-  private BluetoothManager blueToothManager = Context.getSystemService(Context.BLUETOOTH_SERVICE);
-  private BroadcastReceiver receiver;
-  private ActivityResultLauncher<Intent> bluetoothResultLauncher;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -147,25 +139,6 @@ public class MainActivity extends AppCompatActivity implements SampleRender.Rend
     hmdIPText = findViewById((R.id.hmdip_text));
     positionText = findViewById((R.id.position_text));
     orientationText = findViewById((R.id.orientation_text));
-
-    // Initialize Bluetooth
-
-    // Create a BroadcastReceiver for ACTION_FOUND.
-    receiver = new BroadcastReceiver() {
-      public void onReceive(Context context, Intent intent) {
-        String action = intent.getAction();
-        if (BluetoothDevice.ACTION_FOUND.equals(action)) {
-          // Discovery has found a device. Get the BluetoothDevice
-          // object and its info from the Intent.
-          BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-          if (ContextCompat.checkSelfPermission(context, BLUETOOTH_SCAN) == PackageManager.PERMISSION_DENIED){
-
-          }
-          String deviceName = device.getName();
-          String deviceHardwareAddress = device.getAddress(); // MAC address
-        }
-      }
-    };
 
     // Initialize UI
     initUI();
