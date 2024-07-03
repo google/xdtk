@@ -61,6 +61,10 @@ import com.google.ar.core.exceptions.UnavailableArcoreNotInstalledException;
 import com.google.ar.core.exceptions.UnavailableDeviceNotCompatibleException;
 import com.google.ar.core.exceptions.UnavailableSdkTooOldException;
 import com.google.ar.core.exceptions.UnavailableUserDeclinedInstallationException;
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.InetAddress;
