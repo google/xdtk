@@ -78,8 +78,6 @@ import com.google.ar.core.exceptions.UnavailableDeviceNotCompatibleException;
 import com.google.ar.core.exceptions.UnavailableSdkTooOldException;
 import com.google.ar.core.exceptions.UnavailableUserDeclinedInstallationException;
 
-import com.google.android.play.core.install.model.ActivityResult;
-
 import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.InetAddress;
