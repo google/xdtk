@@ -25,6 +25,8 @@ import android.os.Vibrator;
 import android.util.DisplayMetrics;
 import android.view.ScaleGestureDetector;
 import com.google.ar.core.Pose;
+import com.google.ar.core.examples.java.common.helpers.BTPermissionHelper;
+
 import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -60,7 +62,14 @@ public class CommunicationHandler {
   }
 
   public void bluetoothBecomeDiscoverable (){
-    btTransceiver = new BTTransceiver();
+    // If it doesn't have relevant BT permissions
+    if (!BTPermissionHelper.hasBTPermission(mainApp)){
+      // Request relevant BT permissions
+      BTPermissionHelper.requestPermissions(mainApp);
+    } else{
+      // Perform the scan by running the BT Transceiver
+      btTransceiver = new BTTransceiver(mainApp);
+    }
   }
 
   public void closeConnection() {
