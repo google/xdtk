@@ -69,13 +69,13 @@ public class CommunicationHandler {
 
   private void initResetHeartbeatTask() {
     resetHeartbeatTask =
-        new TimerTask() {
-          @Override
-          public void run() {
-            // reset heartbeat
-            isConnected = false;
-          }
-        };
+            new TimerTask() {
+              @Override
+              public void run() {
+                // reset heartbeat
+                isConnected = false;
+              }
+            };
   }
 
   /** Getter Functions */
@@ -204,20 +204,20 @@ public class CommunicationHandler {
     float[] position = pose.getTranslation(); // x y z
     float[] rotation = pose.getRotationQuaternion(); // x y z w
     String msg =
-        "ARPOSE,"
-            + position[0]
-            + ","
-            + position[1]
-            + ","
-            + position[2]
-            + ","
-            + rotation[0]
-            + ","
-            + rotation[1]
-            + ","
-            + rotation[2]
-            + ","
-            + rotation[3];
+            "ARPOSE,"
+                    + position[0]
+                    + ","
+                    + position[1]
+                    + ","
+                    + position[2]
+                    + ","
+                    + rotation[0]
+                    + ","
+                    + rotation[1]
+                    + ","
+                    + rotation[2]
+                    + ","
+                    + rotation[3];
     if (transceiver != null) {
       transceiver.sendData(msg);
     }
@@ -226,22 +226,22 @@ public class CommunicationHandler {
   /** Touch Messages */
   public void sendTouchDown(Touch touch) {
     String msg =
-        "TOUCH_DOWN,"
-            + touch.ID
-            + ","
-            + touch.positionX
-            + ","
-            + touch.positionY
-            + ","
-            + touch.size
-            + ","
-            + touch.pressure
-            + ","
-            + touch.deltaX
-            + ","
-            + touch.deltaY
-            + ","
-            + touch.toolType;
+            "TOUCH_DOWN,"
+                    + touch.ID
+                    + ","
+                    + touch.positionX
+                    + ","
+                    + touch.positionY
+                    + ","
+                    + touch.size
+                    + ","
+                    + touch.pressure
+                    + ","
+                    + touch.deltaX
+                    + ","
+                    + touch.deltaY
+                    + ","
+                    + touch.toolType;
     if (transceiver != null) {
       transceiver.sendData(msg);
     }
@@ -249,22 +249,22 @@ public class CommunicationHandler {
 
   public void sendTouchUp(Touch touch) {
     String msg =
-        "TOUCH_UP,"
-            + touch.ID
-            + ","
-            + touch.positionX
-            + ","
-            + touch.positionY
-            + ","
-            + touch.size
-            + ","
-            + touch.pressure
-            + ","
-            + touch.deltaX
-            + ","
-            + touch.deltaY
-            + ","
-            + touch.toolType;
+            "TOUCH_UP,"
+                    + touch.ID
+                    + ","
+                    + touch.positionX
+                    + ","
+                    + touch.positionY
+                    + ","
+                    + touch.size
+                    + ","
+                    + touch.pressure
+                    + ","
+                    + touch.deltaX
+                    + ","
+                    + touch.deltaY
+                    + ","
+                    + touch.toolType;
     if (transceiver != null) {
       transceiver.sendData(msg);
     }
@@ -274,22 +274,22 @@ public class CommunicationHandler {
     if (System.currentTimeMillis() - timeOfLastMsg_touchMove_ms > msgRate_touchMove_ms) {
       timeOfLastMsg_touchMove_ms = System.currentTimeMillis();
       String msg =
-          "TOUCH_MOVE,"
-              + touch.ID
-              + ","
-              + touch.positionX
-              + ","
-              + touch.positionY
-              + ","
-              + touch.size
-              + ","
-              + touch.pressure
-              + ","
-              + touch.deltaX
-              + ","
-              + touch.deltaY
-              + ","
-              + touch.toolType;
+              "TOUCH_MOVE,"
+                      + touch.ID
+                      + ","
+                      + touch.positionX
+                      + ","
+                      + touch.positionY
+                      + ","
+                      + touch.size
+                      + ","
+                      + touch.pressure
+                      + ","
+                      + touch.deltaX
+                      + ","
+                      + touch.deltaY
+                      + ","
+                      + touch.toolType;
       if (transceiver != null) {
         transceiver.sendData(msg);
       }
@@ -362,10 +362,10 @@ public class CommunicationHandler {
       String modelName = Build.MODEL;
       String manufacturer = Build.MANUFACTURER;
       String deviceName =
-          manufacturer.substring(0, 1).toUpperCase(Locale.ROOT)
-              + manufacturer.substring(1)
-              + " "
-              + modelName;
+              manufacturer.substring(0, 1).toUpperCase(Locale.ROOT)
+                      + manufacturer.substring(1)
+                      + " "
+                      + modelName;
 
       // Get display size
       DisplayMetrics displayMetrics = mainApp.getResources().getDisplayMetrics();
@@ -381,16 +381,16 @@ public class CommunicationHandler {
       float heightInches = heightPx / displayMetrics.ydpi;
 
       String msg =
-          "DEVICE_INFO,"
-              + deviceName
-              + ","
-              + widthPx
-              + ","
-              + heightPx
-              + ","
-              + widthInches
-              + ","
-              + heightInches;
+              "DEVICE_INFO,"
+                      + deviceName
+                      + ","
+                      + widthPx
+                      + ","
+                      + heightPx
+                      + ","
+                      + widthInches
+                      + ","
+                      + heightInches;
       if (transceiver != null) {
         transceiver.sendData(msg);
       }

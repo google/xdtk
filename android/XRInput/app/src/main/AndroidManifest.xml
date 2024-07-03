@@ -22,8 +22,6 @@
   <uses-permission android:name="android.permission.INTERNET" />
   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
   <uses-permission android:name="android.permission.VIBRATE"/>
-<<<<<<< Updated upstream
-=======
 
   <!-- For Bluetooth -->
   <!-- Request legacy Bluetooth permissions on older devices. -->
@@ -42,8 +40,7 @@
   <!-- Needed to look derive physical location using Bluetooth. For some reason BLE needs this too -->
   <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
   <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-
->>>>>>> Stashed changes
+  
   <!-- Limits app visibility in the Google Play Store to ARCore supported devices
        (https://developers.google.com/ar/devices). -->
   <uses-feature android:name="android.hardware.camera.ar" android:required="true"/>
