@@ -1,7 +1,9 @@
 package com.google.ar.core.examples.java.common.helpers;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -21,17 +23,20 @@ public final class BTPermissionHelper {
     private static final String TAG = BTPermissionHelper.class.getSimpleName();
 
     /** Checks if a single permission is granted */
-    public static boolean isPermissionGranted (Activity activity, String permission){
+    public static boolean isPermissionGranted(Activity activity, String permission) {
         return ContextCompat.checkSelfPermission(activity, permission)
                 == PackageManager.PERMISSION_GRANTED;
     }
 
     /** Check to see we have the necessary permissions for this app. */
     public static boolean hasBTPermission(Activity activity) {
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
+        Log.d(TAG, "Checking Permissions...");
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            Log.d(TAG, "Detected Device as > Code S");
             return isPermissionGranted(activity, android.Manifest.permission.BLUETOOTH_SCAN) &&
                     isPermissionGranted(activity, android.Manifest.permission.BLUETOOTH_CONNECT);
-        } else{
+        } else {
+            Log.d(TAG, "Detected Device as < Code S");
             return isPermissionGranted(activity, Manifest.permission.ACCESS_FINE_LOCATION);
         }
     }
@@ -59,20 +64,20 @@ public final class BTPermissionHelper {
 
     /** Request for the relevant permissions. */
     public static void requestPermissions(Activity activity) {
-        Log.d(TAG, "Requesting Permissions...");
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
+        Log.d(TAG, "Requesting Relevant BT Permissions...");
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             requestBluetoothPermissions(activity);
-        } else{
+        } else {
             requestLocationPermission(activity);
         }
     }
 
     /** Check to see if we need to show the rationale for this permission. */
     public static boolean shouldShowRequestPermissionRationale(Activity activity) {
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             return ActivityCompat.shouldShowRequestPermissionRationale(activity, android.Manifest.permission.BLUETOOTH_SCAN) ||
                     ActivityCompat.shouldShowRequestPermissionRationale(activity, android.Manifest.permission.BLUETOOTH_CONNECT);
-        } else{
+        } else {
             return ActivityCompat.shouldShowRequestPermissionRationale(activity, android.Manifest.permission.ACCESS_FINE_LOCATION);
         }
     }
@@ -83,5 +88,14 @@ public final class BTPermissionHelper {
         intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
         intent.setData(Uri.fromParts("package", activity.getPackageName(), null));
         activity.startActivity(intent);
+    }
+
+    @SuppressLint("MissingPermission") // We check for it at the if statement
+    public static void askToEnableBT(Activity activity) {
+        if (!hasBTPermission(activity)) {
+            requestBluetoothPermissions(activity);
+        }
+        Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+        activity.startActivityForResult(enableBtIntent, BT_PERMISSION_CODE);
     }
 }
