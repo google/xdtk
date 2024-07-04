@@ -4,6 +4,9 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothGatt;
+import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattServer;
 import android.bluetooth.BluetoothGattServerCallback;
@@ -37,15 +40,16 @@ public class BTTransceiver {
     // Grab a Bluetooth Manager and Adapter
     private BluetoothManager btManager;
     private BluetoothAdapter btAdapter;
+    private BluetoothDevice selfDevice;
+    private BluetoothGatt hackyWriter;
 
     // The Advertising and its settings
+    private boolean advertising;
     private BluetoothLeAdvertiser bleAdvertiser;
     private AdvertiseSettings settings;
     private AdvertiseData advertiseData;
-    private AdvertiseData scanResponseData;
-
     private BluetoothGattServer gattServer;
-    private BluetoothGattService gattService;
+    private BluetoothGattCallback bluetoothGattCallback;
 
     @SuppressLint("MissingPermission")
     public BTTransceiver(Activity activity){
@@ -54,7 +58,7 @@ public class BTTransceiver {
         // Setup Context
         this.activity = activity;
 
-        // setup BT manager and adapter
+        // setup BT objects
         btManager = (BluetoothManager) activity.getSystemService(Context.BLUETOOTH_SERVICE);
         btAdapter = btManager.getAdapter();
         // "Valid Bluetooth names are a maximum of 248 bytes using UTF-8 encoding,
@@ -62,8 +66,20 @@ public class BTTransceiver {
         // and some may be limited to just 20."
         btAdapter.setName("XDTKAndroid");
 
+        // setup itself as a device
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            selfDevice = btAdapter.getRemoteLeDevice(btAdapter.getAddress(), BluetoothDevice.ADDRESS_TYPE_PUBLIC);
+
+            bluetoothGattCallback = new BluetoothGattCallback() {};
+
+            hackyWriter = selfDevice.connectGatt(activity, true, bluetoothGattCallback);
+        }
+
         // setup advertising settings
         constructAdvertisementSettings();
+
+        // Is not advertising right now
+        advertising = false;
     }
 
     public void constructAdvertisementSettings(){
@@ -81,6 +97,10 @@ public class BTTransceiver {
         // The former means that BT is not available on device
         // The latter means that BT is not enabled on device
         return btAdapter == null || !btAdapter.isEnabled();
+    }
+
+    public boolean isAdvertising(){
+        return advertising;
     }
 
     private void askEnableBluetooth(){
@@ -126,6 +146,7 @@ public class BTTransceiver {
 
     @SuppressLint("MissingPermission")
     public void startAdvertise(){
+        Log.d(TAG, "Starting Bluetooth Advertisement");
         openServer();
         addRequiredDetailsService();
         runAdvertiser();
@@ -153,12 +174,17 @@ public class BTTransceiver {
                 BluetoothGattCharacteristic.PERMISSION_READ
         );
 
-        testCharacteristic.setValue(new String("this is read 1").getBytes());
+        testCharacteristic.setValue(("testing").getBytes());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            Log.d(TAG, "WRITING");
+            hackyWriter.writeCharacteristic(testCharacteristic, ("testing").getBytes(), BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE);
+            Log.d(TAG, "WRITING DONE");
+        }
 
         BluetoothGattService service = new BluetoothGattService(
                 UUID.fromString(SERVICE_UUID),
-                BluetoothGattService.SERVICE_TYPE_PRIMARY);
-
+                BluetoothGattService.SERVICE_TYPE_PRIMARY
+        );
 
         service.addCharacteristic(testCharacteristic);
 
@@ -169,6 +195,7 @@ public class BTTransceiver {
     public void runAdvertiser() {
         bleAdvertiser = btAdapter.getBluetoothLeAdvertiser();
         bleAdvertiser.startAdvertising(settings, advertiseData, advertiseCallback);
+        advertising = true;
     }
 
     @SuppressLint("MissingPermission")
@@ -178,5 +205,6 @@ public class BTTransceiver {
         }
 
         bleAdvertiser = null;
+        advertising = false;
     }
 }

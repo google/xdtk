@@ -55,6 +55,7 @@ public class CommunicationHandler {
     resetHeartbeatTimer = new Timer();
     initResetHeartbeatTask();
     vibrator = activity.getSystemService(Vibrator.class);
+    btTransceiver = new BTTransceiver(mainApp);
   }
 
   public void openConnection(String ipAddress) {
@@ -67,8 +68,12 @@ public class CommunicationHandler {
       // Request relevant BT permissions
       BTPermissionHelper.requestPermissions(mainApp);
     } else{
-      // Perform the scan by running the BT Transceiver
-      btTransceiver = new BTTransceiver(mainApp);
+      // Toggle Advertising
+      if (btTransceiver.isAdvertising()){
+        btTransceiver.stopAdvertise();
+      } else{
+        btTransceiver.startAdvertise();
+      }
     }
   }
 
