@@ -38,10 +38,16 @@ public class BTTransceiver {
     private BluetoothManager btManager;
     private BluetoothAdapter btAdapter;
 
+    // The Advertising and its settings
     private BluetoothLeAdvertiser bleAdvertiser;
+    private AdvertiseSettings settings;
+    private AdvertiseData advertiseData;
+    private AdvertiseData scanResponseData;
 
     private BluetoothGattServer gattServer;
+    private BluetoothGattService gattService;
 
+    @SuppressLint("MissingPermission")
     public BTTransceiver(Activity activity){
         Log.d(TAG, "Setting up Bluetooth Transceiver...");
 
@@ -51,6 +57,24 @@ public class BTTransceiver {
         // setup BT manager and adapter
         btManager = (BluetoothManager) activity.getSystemService(Context.BLUETOOTH_SERVICE);
         btAdapter = btManager.getAdapter();
+        // "Valid Bluetooth names are a maximum of 248 bytes using UTF-8 encoding,
+        // although many remote devices can only display the first 40 characters,
+        // and some may be limited to just 20."
+        btAdapter.setName("XDTKAndroid");
+
+        // setup advertising settings
+        constructAdvertisementSettings();
+    }
+
+    public void constructAdvertisementSettings(){
+        settings = new AdvertiseSettings.Builder()
+                .setConnectable(true)
+                .build();
+
+        advertiseData = new AdvertiseData.Builder()
+                .setIncludeDeviceName(true)
+                .setIncludeTxPowerLevel(true)
+                .build();
     }
 
     private boolean isBluetoothEnabled(){
@@ -85,61 +109,66 @@ public class BTTransceiver {
         ;
     };
 
-    private final BLEGATTServerCallback mGattServerCallback = new BLEGATTServerCallback(gattServer);
+    // Replace it with LoggingGATTServerCallback for more logs
+    private final BluetoothGattServerCallback blegattServerCallback = new SimpleGATTServerCallback();
 
     @SuppressLint("MissingPermission")
-    public void startAdvertise() {
-        btAdapter.setName("PeripheralAndroid"); //8 characters works, 9+ fails
+    private void addDeviceInfoService() {
+        // 0x180A indicates the device information
+        final String SERVICE_DEVICE_INFORMATION = "0000180a-0000-1000-8000-00805f9b34fb";
 
-        gattServer = btManager.openGattServer(activity, mGattServerCallback);
+        BluetoothGattService deviceInfoService = new BluetoothGattService(
+                UUID.fromString(SERVICE_DEVICE_INFORMATION),
+                BluetoothGattService.SERVICE_TYPE_PRIMARY
+        );
+        gattServer.addService(deviceInfoService);
+    }
 
-        final String SERVICE_A = "0000fff0-0000-1000-8000-00805f9b34fb";
-        final String CHAR_READ_1 = "00fff1-0000-1000-8000-00805f9b34fb";
-        final String CHAR_READ_2 = "00fff2-0000-1000-8000-00805f9b34fb";
-        final String CHAR_WRITE = "00fff3-0000-1000-8000-00805f9b34fb";
+    @SuppressLint("MissingPermission")
+    public void startAdvertise(){
+        openServer();
+        addRequiredDetailsService();
+        runAdvertiser();
+    }
+
+    @SuppressLint("MissingPermission")
+    private void openServer() {
+        gattServer = btManager.openGattServer(activity, blegattServerCallback);
+        addDeviceInfoService();
+    }
+
+    @SuppressLint("MissingPermission")
+    public void addRequiredDetailsService() {
+        // Randomly generated base UUID: f115xxxx-d3be-43bb-b5f1-a210e2c6757b
+        // replace the xxxx with a number indicating which service
+
+        // String indicating Public Key Open Credential (PKOC) Service
+        final String SERVICE_UUID = "f115ffff-d3be-43bb-b5f1-a210e2c6757b";
+        final String CHARACTERISTIC_TEST_UUID = "f1150001-d3be-43bb-b5f1-a210e2c6757b";
 
 
-        BluetoothGattCharacteristic read1Characteristic = new BluetoothGattCharacteristic(
-                UUID.fromString(CHAR_READ_1),
+        BluetoothGattCharacteristic testCharacteristic = new BluetoothGattCharacteristic(
+                UUID.fromString(CHARACTERISTIC_TEST_UUID),
                 BluetoothGattCharacteristic.PROPERTY_READ,
                 BluetoothGattCharacteristic.PERMISSION_READ
         );
 
-        read1Characteristic.setValue(new String("this is read 1").getBytes());
+        testCharacteristic.setValue(new String("this is read 1").getBytes());
 
-        BluetoothGattCharacteristic read2Characteristic = new BluetoothGattCharacteristic(
-                UUID.fromString(CHAR_READ_2),
-                BluetoothGattCharacteristic.PROPERTY_READ,
-                BluetoothGattCharacteristic.PERMISSION_READ
-        );
-
-        read2Characteristic.setValue(new String("this is read 2").getBytes());
-
-
-        BluetoothGattCharacteristic writeCharacteristic = new BluetoothGattCharacteristic(
-                UUID.fromString(CHAR_WRITE),
-                BluetoothGattCharacteristic.PROPERTY_WRITE,
-                BluetoothGattCharacteristic.PERMISSION_WRITE
-        );
-
-
-        BluetoothGattService AService = new BluetoothGattService(
-                UUID.fromString(SERVICE_A),
+        BluetoothGattService service = new BluetoothGattService(
+                UUID.fromString(SERVICE_UUID),
                 BluetoothGattService.SERVICE_TYPE_PRIMARY);
 
 
-        AService.addCharacteristic(read1Characteristic);
-        AService.addCharacteristic(read2Characteristic);
-        AService.addCharacteristic(writeCharacteristic);
+        service.addCharacteristic(testCharacteristic);
 
-        // Add notify characteristic here !!!
+        gattServer.addService(service);
+    }
 
-        gattServer.addService(AService);
-
-
-        bleAdvertiser.startAdvertising(settingBuilder.build(),
-                advBuilder.build(), advertiseCallback);
-
+    @SuppressLint("MissingPermission") // checked already
+    public void runAdvertiser() {
+        bleAdvertiser = btAdapter.getBluetoothLeAdvertiser();
+        bleAdvertiser.startAdvertising(settings, advertiseData, advertiseCallback);
     }
 
     @SuppressLint("MissingPermission")

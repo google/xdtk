@@ -10,11 +10,13 @@ import android.bluetooth.BluetoothGattServerCallback;
 import android.bluetooth.BluetoothGattService;
 import android.util.Log;
 
-public class BLEGATTServerCallback extends BluetoothGattServerCallback {
+// This replaces the normal gatt server callback with a bunch of logs. No need to use RN
+// Source: https://gist.github.com/bitristan/80705230ec59d952414f
+public class LoggingGATTServerCallback extends BluetoothGattServerCallback {
     // the GATT server
     private BluetoothGattServer gattServer;
 
-    public BLEGATTServerCallback (BluetoothGattServer gattServer){
+    public LoggingGATTServerCallback(BluetoothGattServer gattServer){
         this.gattServer = gattServer;
     }
 
