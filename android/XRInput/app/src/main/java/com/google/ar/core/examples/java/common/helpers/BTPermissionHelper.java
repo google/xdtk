@@ -34,7 +34,8 @@ public final class BTPermissionHelper {
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             Log.d(TAG, "Detected Device as > Code S");
             return isPermissionGranted(activity, android.Manifest.permission.BLUETOOTH_SCAN) &&
-                    isPermissionGranted(activity, android.Manifest.permission.BLUETOOTH_CONNECT);
+                    isPermissionGranted(activity, android.Manifest.permission.BLUETOOTH_CONNECT) &&
+                    isPermissionGranted(activity, Manifest.permission.BLUETOOTH_ADVERTISE);
         } else {
             Log.d(TAG, "Detected Device as < Code S");
             return isPermissionGranted(activity, Manifest.permission.ACCESS_FINE_LOCATION);
@@ -47,7 +48,8 @@ public final class BTPermissionHelper {
                 activity,
                 new String[]{
                         android.Manifest.permission.BLUETOOTH_SCAN,
-                        android.Manifest.permission.BLUETOOTH_CONNECT
+                        android.Manifest.permission.BLUETOOTH_CONNECT,
+                        android.Manifest.permission.BLUETOOTH_ADVERTISE,
                 },
                 BT_PERMISSION_CODE
         );
@@ -57,7 +59,10 @@ public final class BTPermissionHelper {
     private static void requestLocationPermission(Activity activity) {
         ActivityCompat.requestPermissions(
                 activity,
-                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                new String[]{
+                        android.Manifest.permission.ACCESS_FINE_LOCATION,
+                        android.Manifest.permission.BLUETOOTH_ADVERTISE
+                },
                 BT_PERMISSION_CODE
         );
     }
