@@ -8,6 +8,7 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothGattCharacteristic;
+import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattServer;
 import android.bluetooth.BluetoothGattServerCallback;
 import android.bluetooth.BluetoothGattService;
@@ -148,14 +149,15 @@ public class BTTransceiver {
     public void startAdvertise(){
         Log.d(TAG, "Starting Bluetooth Advertisement");
         openServer();
+        addDeviceInfoService();
         addRequiredDetailsService();
+
         runAdvertiser();
     }
 
     @SuppressLint("MissingPermission")
     private void openServer() {
         gattServer = btManager.openGattServer(activity, blegattServerCallback);
-        addDeviceInfoService();
     }
 
     @SuppressLint("MissingPermission")
@@ -164,31 +166,44 @@ public class BTTransceiver {
         // replace the xxxx with a number indicating which service
 
         // String indicating Public Key Open Credential (PKOC) Service
-        final String SERVICE_UUID = "f115ffff-d3be-43bb-b5f1-a210e2c6757b";
-        final String CHARACTERISTIC_TEST_UUID = "f1150001-d3be-43bb-b5f1-a210e2c6757b";
+        final String SERVICE_UUID = "00002902-0000-1000-8000-00805F9B34FB";
+        final String CHARACTERISTIC_TEST_UUID = "00001234-0000-1000-8000-00805F9B34FB";
+        final String DESCRIPTOR_TEST_UUID = "00005678-0000-1000-8000-00805F9B34FB";
 
-
-        BluetoothGattCharacteristic testCharacteristic = new BluetoothGattCharacteristic(
-                UUID.fromString(CHARACTERISTIC_TEST_UUID),
-                BluetoothGattCharacteristic.PROPERTY_READ,
-                BluetoothGattCharacteristic.PERMISSION_READ
+        Log.d(TAG, "Descriptor Coding");
+        BluetoothGattDescriptor testDescriptor = new BluetoothGattDescriptor(
+                UUID.fromString(DESCRIPTOR_TEST_UUID),
+                BluetoothGattDescriptor.PERMISSION_READ | BluetoothGattDescriptor.PERMISSION_WRITE
         );
 
-        testCharacteristic.setValue(("testing").getBytes());
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            Log.d(TAG, "WRITING");
-            hackyWriter.writeCharacteristic(testCharacteristic, ("testing").getBytes(), BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE);
-            Log.d(TAG, "WRITING DONE");
-        }
+        //testDescriptor.setValue(("testingd").getBytes());
+
+        Log.d(TAG, "Characteristic Coding");
+        BluetoothGattCharacteristic testCharacteristic = new BluetoothGattCharacteristic(
+                UUID.fromString(CHARACTERISTIC_TEST_UUID),
+                BluetoothGattCharacteristic.PROPERTY_WRITE_NO_RESPONSE | BluetoothGattCharacteristic.PROPERTY_NOTIFY | BluetoothGattCharacteristic.PROPERTY_READ,
+                BluetoothGattCharacteristic.PERMISSION_WRITE | BluetoothGattCharacteristic.PERMISSION_READ
+        );
 
         BluetoothGattService service = new BluetoothGattService(
                 UUID.fromString(SERVICE_UUID),
                 BluetoothGattService.SERVICE_TYPE_PRIMARY
         );
 
-        service.addCharacteristic(testCharacteristic);
+        //testCharacteristic.addDescriptor(testDescriptor);
 
+        testCharacteristic.setValue(1234,
+                BluetoothGattCharacteristic.FORMAT_UINT8, /* offset */ 0);
+        testCharacteristic.setValue(("testing").getBytes());
+        service.addCharacteristic(testCharacteristic);
         gattServer.addService(service);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+//            Log.d(TAG, "WRITING");
+//            hackyWriter.writeCharacteristic(testCharacteristic, ("testing").getBytes(), BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE);
+//            Log.d(TAG, "WRITING DONE");
+        }
+
     }
 
     @SuppressLint("MissingPermission") // checked already
