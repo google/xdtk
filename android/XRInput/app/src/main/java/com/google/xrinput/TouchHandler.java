@@ -87,7 +87,7 @@ public class TouchHandler
                 pointerId,
                 event.getRawX(index),
                 event.getRawY(index),
-                event.getToolType(pointerId));
+                event.getToolType(index));
         touches.put(pointerId, newTouch);
 
         // POST TOUCH EVENT
