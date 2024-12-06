@@ -44,56 +44,6 @@ public class SensorHandler {
     Sensor sensor = sensorManager.getDefaultSensor(sensorType);
 
     if (sensor != null) {
-      SensorEventListener listener =
-          new SensorEventListener() {
-            @Override
-            public void onSensorChanged(SensorEvent event) {
-              // update values for use later
-              sensorValues.put(sensorType, event.values.clone());
-
-              // compute device orientation (e.g. portrait, landscape)
-              if (event.sensor.getType() == Sensor.TYPE_GRAVITY) {
-                float[] gravity = new float[3];
-                gravity[0] = event.values[0];
-                gravity[1] = event.values[1];
-                gravity[2] = event.values[2];
-
-                double gravityNorm =
-                    Math.sqrt(
-                        gravity[0] * gravity[0]
-                            + gravity[1] * gravity[1]
-                            + gravity[2] * gravity[2]);
-
-                // Normalize gravity vector.
-                gravity[0] /= gravityNorm;
-                gravity[1] /= gravityNorm;
-                gravity[2] /= gravityNorm;
-
-                // set device orientation based on gravity direction
-                if (gravity[2] > 0.8) {
-                  deviceOrientation = "FACE_UP";
-                } else if (gravity[2] < -0.8) {
-                  deviceOrientation = "FACE_DOWN";
-                } else if (gravity[0] > 0.8) {
-                  deviceOrientation = "LANDSCAPE_LEFT";
-                } else if (gravity[0] < -0.8) {
-                  deviceOrientation = "LANDSCAPE_RIGHT";
-                } else if (gravity[1] > 0.8) {
-                  deviceOrientation = "PORTRAIT";
-                } else if (gravity[1] < -0.8) {
-                  deviceOrientation = "PORTRAIT_UPSIDE_DOWN";
-                } else {
-                  // deviceOrientation = "UNKNOWN";
-                }
-              }
-            }
-
-            @Override
-            public void onAccuracyChanged(Sensor sensor, int accuracy) {
-              // Handle accuracy changes
-            }
-          };
-
       // set sampling rate
       sensorManager.registerListener(listener, sensor, SensorManager.SENSOR_DELAY_GAME);
 
@@ -103,6 +53,55 @@ public class SensorHandler {
       Log.e("SensorHandler", "Sensor of type " + sensorType + " not available.");
     }
   }
+
+  private SensorEventListener listener = new SensorEventListener() {
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+      // update values for use later
+      sensorValues.put(event.sensor.getType(), event.values.clone());
+
+      // compute device orientation (e.g. portrait, landscape)
+      if (event.sensor.getType() == Sensor.TYPE_GRAVITY) {
+        float[] gravity = new float[3];
+        gravity[0] = event.values[0];
+        gravity[1] = event.values[1];
+        gravity[2] = event.values[2];
+
+        double gravityNorm =
+            Math.sqrt(
+                gravity[0] * gravity[0]
+                    + gravity[1] * gravity[1]
+                    + gravity[2] * gravity[2]);
+
+        // Normalize gravity vector.
+        gravity[0] /= gravityNorm;
+        gravity[1] /= gravityNorm;
+        gravity[2] /= gravityNorm;
+
+        // set device orientation based on gravity direction
+        if (gravity[2] > 0.8) {
+          deviceOrientation = "FACE_UP";
+        } else if (gravity[2] < -0.8) {
+          deviceOrientation = "FACE_DOWN";
+        } else if (gravity[0] > 0.8) {
+          deviceOrientation = "LANDSCAPE_LEFT";
+        } else if (gravity[0] < -0.8) {
+          deviceOrientation = "LANDSCAPE_RIGHT";
+        } else if (gravity[1] > 0.8) {
+          deviceOrientation = "PORTRAIT";
+        } else if (gravity[1] < -0.8) {
+          deviceOrientation = "PORTRAIT_UPSIDE_DOWN";
+        } else {
+          // deviceOrientation = "UNKNOWN";
+        }
+      }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+      // Handle accuracy changes
+    }
+  };
 
   public void unregisterSensorListener(int sensorType) {
     SensorEventListener listener = sensorEventListeners.get(sensorType);
