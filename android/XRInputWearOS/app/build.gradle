@@ -19,8 +19,8 @@ plugins {
 }
 
 android {
+    namespace "com.google.xrinputwearos"
     compileSdk 30
-    buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "com.google.xrinputwearos"
